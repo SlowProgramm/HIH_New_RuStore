@@ -51,3 +51,6 @@ def login_view(request: HttpRequest) -> HttpResponse:
                 login(request, user)
                 return redirect('home')
     return render(request, 'login.html', {'form': form})
+
+def account_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'account.html')

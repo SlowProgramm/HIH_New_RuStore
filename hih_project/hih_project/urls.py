@@ -8,4 +8,5 @@ urlpatterns: list[URLPattern]  = [
     path('create/', create_view, name='create'),
     path('signup/', signup_view, name='signup'),
     path('login/', login_view, name='login'),
+    path('account/', account_view, name='account'),
 ]
