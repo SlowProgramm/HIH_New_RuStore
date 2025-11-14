@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.contrib.auth import login, authenticate
-from .models import Task
+from .models import *
 from .forms import *
 
 def index_view(request: HttpRequest) -> HttpResponse:
@@ -54,3 +54,10 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 def account_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'account.html')
+
+# Библиотека приложений
+def apps_view(request: HttpRequest) -> HttpResponse:
+    apps = App.objects.all()
+    categories = Category.objects.all()
+    print(categories)
+    return render(request, 'apps.html', {'apps': apps, 'categories':categories})

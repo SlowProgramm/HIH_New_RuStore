@@ -11,5 +11,6 @@ urlpatterns: list[URLPattern]  = [
     path('account/', account_view, name='account'),
     path('admin/', admin.site.urls),
     path('apps/', apps_view, name='apps'),
+    path('fuck/', index_view, name='app_detail'),#Заглушка
 
 ]
