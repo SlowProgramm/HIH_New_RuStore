@@ -9,4 +9,5 @@ urlpatterns: list[URLPattern]  = [
     path('signup/', signup_view, name='signup'),
     path('login/', login_view, name='login'),
     path('account/', account_view, name='account'),
+    path('admin/', admin.site.urls),
 ]
