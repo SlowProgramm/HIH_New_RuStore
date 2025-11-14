@@ -1,7 +1,6 @@
-from django.db import models
-from django.db.models import CharField, TextField
+from django.db.models import CharField, TextField, Model
 
-class Task(models.Model):
+class Task(Model):
     title: CharField = CharField('Название', max_length=50)
     task: TextField = TextField('Описание')
 
