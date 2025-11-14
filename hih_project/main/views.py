@@ -58,6 +58,4 @@ def account_view(request: HttpRequest) -> HttpResponse:
 # Библиотека приложений
 def apps_view(request: HttpRequest) -> HttpResponse:
     apps = App.objects.all()
-    categories = Category.objects.all()
-    print(categories)
-    return render(request, 'apps.html', {'apps': apps, 'categories':categories})
+    return render(request, 'apps.html', {'apps': apps})
