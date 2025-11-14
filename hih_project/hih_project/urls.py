@@ -10,4 +10,6 @@ urlpatterns: list[URLPattern]  = [
     path('login/', login_view, name='login'),
     path('account/', account_view, name='account'),
     path('admin/', admin.site.urls),
+    path('apps/', apps_view, name='apps'),
+
 ]
