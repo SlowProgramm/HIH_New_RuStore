@@ -24,8 +24,8 @@
                     <li><a href="{% url 'create' %}" class="nav-link">Создать Task</a></li>
                     
                     <div class="auth-buttons">
-                        <a href="login.html" class="btn btn-login">Войти</a>
-                        <a href="register.html" class="btn btn-register">Регистрация</a>
+                        <a href="{% url 'login' %}" class="btn btn-login">Войти</a>
+                        <a href="{% url 'signup' %}" class="btn btn-signup">Регистрация</a>
                     </div>
                 </ul>
             </nav>
