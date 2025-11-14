@@ -14,17 +14,6 @@
         </div>
 
         <br><br><br>
-        {% if tasks %}
-
-        {% for el in tasks %}
-        
-            <h3> {{el.title}}</h3>
-            <h3> {{el.task}}</h3>
-        {% endfor %}
-
-        {% else %}
-        <h3>Ничего нет</h3>
-        {% endif %}
         
     </main>
 {% endblock %}
