@@ -4,16 +4,67 @@
 {% endblock %}
 
 {% block content %}
-    
-    <main class="main-content">
-    
-        <div class="content-section">
-            <h1>Добро пожаловать на сайт!</h1>
-            <p>Это пример контента страницы. Header остается одинаковым на всех страницах.</p>
-            <p>Просто скопируйте код header в каждую HTML-страницу вашего проекта.</p>
-        </div>
 
-        <br><br><br>
-        
-    </main>
+<main class="main-content">
+    
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <h1>Не будь говном - пользуйся говном</h1>
+                </td>
+                <td>
+                    <a href="signup/" class="btn btn_link_to_signup">Зарегаться</a>
+                </td>
+            </tr>
+                
+        </table>
+    </div>
+
+
+    <div class="frame_of_fast_categories">
+        <h2>Отдыхайте с кайфом</h2>
+        <a href="/categories" class="btn btn_link_to_category">Аркады</a>
+        <a href="/categories" class="btn btn_link_to_category">Головоломки</a>
+        <a href="/categories" class="btn btn_link_to_category">Шутеры</a>
+        <a href="/categories" class="btn btn_link_to_category">Экшен</a>
+    </div>
+
+
+    <div>
+    <table>
+        <tr>
+            <td>
+                <h1>Гарантия безопасности</h1>
+                <p>Проверка приложений модерзацией и антивирусом</p>
+            </td>
+            <td>
+                <h1>Удобная оплата подписок и покупок</h1>
+                <p>Платите картой, по СБП, с банника телефона и не только</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h1>Доступ к приложениям без ограничений</h1>
+                <p>Все пред рукой — от мобильных банков до игровых китов</p>
+            </td>
+            <td>
+                <h1>Наведите камеру для загрузки RuStore</h1>
+                <p>Поддерживаются устройства от android 8.0 же.</p>
+                <p>Harmony OS 3</p>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="frame_of_fast_categories">
+        <h2>Найдите что-то полезное и для себя</h2>
+        <a href="/categories" class="btn btn_link_to_category">Финансы</a>
+        <a href="/categories" class="btn btn_link_to_category">Хуянсы</a>
+        <a href="/categories" class="btn btn_link_to_category">Лотереи</a>
+        <a href="/categories" class="btn btn_link_to_category">Инструменты</a>
+    </div>
+
+</main>
 {% endblock %}
