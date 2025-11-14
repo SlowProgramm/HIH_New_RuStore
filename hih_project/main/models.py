@@ -1,6 +1,22 @@
 from django.db.models import CharField, TextField, Model, IntegerField, PositiveBigIntegerField, FloatField, ImageField, DateTimeField, ForeignKey, CASCADE, PROTECT
 from django.contrib.auth.models import User
 
+def icon_path(_, filename: str) -> str:
+    return f'icons/{filename}'
+
+
+def app_developer_path(instance: 'AppDeveloper', filename: str) -> str:
+    return f'app_developer_id{instance.id}/{filename}'
+
+
+def app_path(instance: 'App', filename: str) -> str:
+    return f'app_id{instance.id}/{filename}'
+
+
+def app_preview_image_path(instance: 'AppPreviewImage', filename: str) -> str:
+    return app_path(instance.app, f'preview_images/{filename}')
+
+
 class Task(Model):
     title: CharField = CharField('Название', max_length=50)
     task: TextField = TextField('Описание')
@@ -14,7 +30,7 @@ class Task(Model):
 class AppCategory(Model):
     name: CharField = CharField(max_length=100, unique=True)
     description: TextField = TextField()
-    icon: ImageField = ImageField()
+    icon: ImageField = ImageField(upload_to=icon_path)
 
     def __str__(self) -> str:
         return f'AppCategory(name={self.name})'
@@ -24,7 +40,7 @@ class AppSubcategory(Model):
     name: CharField = CharField(max_length=100)
     category: ForeignKey = ForeignKey(AppCategory, CASCADE)
     description: TextField = TextField()
-    icon: ImageField = ImageField()
+    icon: ImageField = ImageField(upload_to=icon_path)
 
     def __str__(self) -> str:
         return f'AppSubcategory(name={self.name}, category={self.category.related_model.name})'
@@ -44,7 +60,7 @@ class AppAgeRating(Model):
 class AppDeveloper(Model):
     name: CharField = CharField(max_length=256, unique=True)
     description: TextField = TextField()
-    avatar: ImageField = ImageField()
+    avatar: ImageField = ImageField(upload_to=app_developer_path)
 
 
 class App(Model):
@@ -52,6 +68,7 @@ class App(Model):
     """App name."""
     description: TextField = TextField()
     """App description."""
+    icon: ImageField = ImageField(upload_to=app_path)
     rating: FloatField = FloatField(default=0.0)
     """App rating from 0.0 to 5.0."""
     estimations_count: PositiveBigIntegerField = PositiveBigIntegerField(default=0)
@@ -81,3 +98,9 @@ class AppEstimation(Model):
     """Date and time of estimation published."""
     content: TextField = TextField()
     """Text content of the estimation."""
+
+
+class AppPreviewImage(Model):
+    app: ForeignKey = ForeignKey(App, CASCADE)
+    place: IntegerField = IntegerField()
+    source: ImageField = ImageField(upload_to=app_preview_image_path)
