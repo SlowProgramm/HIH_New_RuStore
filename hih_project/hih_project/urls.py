@@ -13,7 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('apps/', apps_view, name='apps'),
     path('app/<str:app_id>/', app_detail_view, name='app_detail'), 
-    path('categories/', categories_view, name='category_list'),
+    path('categories/', category_view, name='category_list'),
     path('app_for_category/', apps_for_category_view, name='app_for_category'),
     path('developer/<str:dev_id>/', developer_view, name='developer'),
 ]
