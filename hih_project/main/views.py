@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.utils import timezone
 from django.contrib.auth import login, authenticate
+from django.db.models.functions import Lower
 from datetime import datetime
 from .models import *
 from .forms import *
@@ -209,6 +210,7 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
         'app': app,
         'user_estimation_exists': estimation is not None,
         'estimations': AppEstimation.objects.filter(app=app),
+        'app_preview_images': app.query_preview_images(),
         'form': form
     })
 
@@ -339,26 +341,20 @@ def import_apps_from_json(json_file_path):
 
 
 def search_apps_view(request: HttpRequest) -> HttpResponse:
-    if request.method == 'POST' and (form := SearchAppsForm(request.POST)).is_valid():
-        search_sorting_method = form.cleaned_data['search_sorting_method']
-
-        if search_sorting_method == 1:
-            order_method = '-rating', '-downloads'
-        elif search_sorting_method == 2:
-            order_method = '-rating'
-        elif search_sorting_method == 3:
-            order_method = '-downloads'
-        elif search_sorting_method == 4:
-            order_method = 'rating', 'downloads'
-        elif search_sorting_method == 5:
-            order_method = 'rating'
-        elif search_sorting_method == 6:
-            order_method = 'downloads'
-        else:
-            order_method = ()
-
-        search_request = form.cleaned_data['search_request'].lower()
-        apps = App.objects.get_queryset().filter(name__icontains=search_request).order_by(*order_method).all()
+    if request.method == 'POST':
+        if (form := SearchAppsForm(request.POST)).is_valid():
+            search_request = form.cleaned_data['search_request'].strip().lower()
+            apps = sorted(
+                (app for app in App.objects.all() if search_request in app.name.lower()),
+                key={
+                    1: lambda x: (-x.rating, -x.downloads),
+                    2: lambda x: (-x.rating,),
+                    3: lambda x: (-x.downloads,),
+                    4: lambda x: (x.rating, x.downloads),
+                    5: lambda x: (x.rating,),
+                    6: lambda x: (x.downloads,),
+                }[form.cleaned_data['search_sorting_method']]
+            )
     else:
         form = SearchAppsForm()
         search_request = None

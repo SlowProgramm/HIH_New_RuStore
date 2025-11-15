@@ -35,14 +35,34 @@
         </div>
     </div>
 
-    <!-- CONTENT -->
+    <!-- ОБЁРТКА -->
     <div class="app-content">
 
-        <!-- DESCRIPTION -->
+        <!-- ОПИСАЛОВО -->
         <section class="app-section">
             <h2>Описание</h2>
             <p class="app-desc">{{ app.description }}</p>
         </section>
+
+        <!-- КАРУСЕЛЬ -->
+        {% if app_preview_images %}
+            <section class="app-section">
+                <div class="mini-carousel">
+                    <div class="main-image">
+                        <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}">
+                    </div>
+                    
+                    <div class="thumbnail-container">
+                        {% for image in app_preview_images %}
+                            <img src="{{ image.source.url }}" 
+                                class="thumbnail {% if forloop.first %}active{% endif %}" 
+                                alt="Миниатюра {{ forloop.counter }}"
+                                onclick="changeMainImage('{{ image.source.url }}', this)">
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
 
         <!-- DETAILS -->
         <section class="app-section">
@@ -121,4 +141,14 @@
 
     </div>
 </div>
+
+<script>
+function changeMainImage(src, element) {
+    document.getElementById('mainCarouselImage').src = src;
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    element.classList.add('active');
+}
+</script>
 {% endblock %}

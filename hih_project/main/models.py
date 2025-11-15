@@ -124,6 +124,9 @@ class App(models.Model):
     downloads = models.PositiveBigIntegerField(editable=False, default=0)
     """Amount of unique downloads."""
 
+    def query_preview_images(self):
+        return AppPreviewImage.objects.get_queryset().filter(app=self).order_by('place')
+
     def __str__(self) -> str:
         return f'App(name={self.name})'
 
