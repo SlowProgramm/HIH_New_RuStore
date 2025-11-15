@@ -40,8 +40,10 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 
 def account_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'account.html')
-
+    return render(request, 'account.html', {
+        'user_estimations': AppEstimation.objects.filter(author=request.user) if request.user.is_authenticated else []
+    })
+# 1f0c21f473486919adbdc8a3e85c8776
 
 def apps_view(request: HttpRequest) -> HttpResponse:
     apps = App.objects.all()
@@ -84,6 +86,9 @@ def app_detail_view(request: HttpRequest, app_id: str)-> HttpResponse:
                 app.rating = (app.rating * app.estimations_count + estimation.estimation) / (app.estimations_count + 1)
                 app.estimations_count += 1
                 app.save()
+
+                request.user.estimations.append(estimation.id)
+                request.user.save()
     elif estimation is not None:
         form = EstimationForm(initial={
             'estimation': estimation.estimation,
