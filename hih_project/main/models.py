@@ -6,13 +6,13 @@ def icon_path(_, filename: str) -> str:
 
 
 def app_developer_path(instance: 'AppDeveloper', filename: str) -> str:
-    return f'app_developer_id{instance.id}/{filename}'
+    return f'app_developers/developer_{instance.name}/{filename}'
 
 
 def app_path(instance: 'App', filename: str) -> str:
-    # Используем имя приложения вместо ID
-    return f'app_icons/{instance.name}/{filename}'
+    return f'apps/app_{instance.name}/{filename}'
 
+    
 def app_preview_image_path(instance: 'AppPreviewImage', filename: str) -> str:
     return app_path(instance.app, f'preview_images/{filename}')
 
@@ -30,7 +30,7 @@ class Task(Model):
 class AppCategory(Model):
     name: CharField = CharField(max_length=100, unique=True)
     description: TextField = TextField()
-    icon: ImageField = ImageField(upload_to=icon_path)
+    icon: ImageField = ImageField(default=None, upload_to=icon_path)
 
     def __str__(self) -> str:
         return f'AppCategory(name={self.name})'
@@ -40,7 +40,7 @@ class AppSubcategory(Model):
     name: CharField = CharField(max_length=100)
     category: ForeignKey = ForeignKey(AppCategory, CASCADE)
     description: TextField = TextField()
-    icon: ImageField = ImageField(upload_to=icon_path)
+    icon: ImageField = ImageField(default=None, upload_to=icon_path)
 
     def __str__(self) -> str:
         return f'AppSubcategory(name={self.name}, category={self.category.name})'
@@ -60,7 +60,7 @@ class AppAgeRating(Model):
 class AppDeveloper(Model):
     name: CharField = CharField(max_length=256, unique=True)
     description: TextField = TextField()
-    avatar: ImageField = ImageField(upload_to=app_developer_path)
+    avatar: ImageField = ImageField(default=None, upload_to=app_developer_path)
 
     def __str__(self) -> str:
         return f'AppDeveloper(name={self.name})'
@@ -70,7 +70,7 @@ class App(Model):
     """App name."""
     description: TextField = TextField()
     """App description."""
-    icon: ImageField = ImageField(upload_to=app_path)
+    icon: ImageField = ImageField(default=None, upload_to=app_path)
     rating: FloatField = FloatField(default=0.0)
     """App rating from 0.0 to 5.0."""
     estimations_count: PositiveBigIntegerField = PositiveBigIntegerField(default=0)
@@ -108,4 +108,4 @@ class AppEstimation(Model):
 class AppPreviewImage(Model):
     app: ForeignKey = ForeignKey(App, CASCADE)
     place: IntegerField = IntegerField()
-    source: ImageField = ImageField(upload_to=app_preview_image_path)
+    source: ImageField = ImageField(default=None, upload_to=app_preview_image_path)
