@@ -56,11 +56,7 @@ def app_detail_view(request: HttpRequest, app_id: str)-> HttpResponse:
         })
     except App.DoesNotExist:
         return render(request, '404.html', status=404)
-    
 
-# def categories_view(request):
-#     categories = AppCategory.objects.prefetch_related('appsubcategory_set').all()
-#     return render(request, 'category_list.html', {'categories': categories})
 
 def category_view(request: HttpRequest) -> HttpResponse:
     categories = AppCategory.objects.all()
