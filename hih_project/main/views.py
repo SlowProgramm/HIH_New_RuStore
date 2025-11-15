@@ -193,9 +193,6 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
                 app.rating = (app.rating * app.estimations_count + estimation.estimation) / (app.estimations_count + 1)
                 app.estimations_count += 1
                 app.save()
-
-                request.user.estimations.append(estimation.id)
-                request.user.save()
     elif estimation is not None:
         form = EstimationForm(initial={
             'estimation': estimation.estimation,
