@@ -1,0 +1,298 @@
+/* PAGE */
+.app-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: Jura, sans-serif;
+    color: #2F235A;
+}
+
+/* HEADER */
+.app-header {
+    display: flex;
+    gap: 30px;
+    padding: 40px 0;
+    border-bottom: 2px solid #E2DDFF;
+}
+
+.app-icon__img,
+.app-icon__placeholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 26px;
+    object-fit: cover;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.25);
+}
+
+/* INFO */
+.app-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.app-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: #544DDF;
+}
+
+.app-dev {
+    font-size: 20px;
+    color: #6C63FF;
+    text-decoration: none;
+}
+
+.app-dev span {
+    color: #544DDF;
+    font-weight: 700;
+}
+
+.app-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 10px 0 15px;
+}
+
+.meta-item {
+    font-size: 18px;
+    color: #544DDF;
+    font-weight: 600;
+}
+
+/* DOWNLOAD BUTTON */
+.btn-download {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #6C63FF, #544DDF);
+    border: none;
+    border-radius: 14px;
+
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(108, 99, 255, 0.45);
+}
+
+/* CONTENT SECTION */
+.app-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.app-section {
+    background: rgba(255,255,255,0.7);
+    border-radius: 18px;
+    padding: 25px;
+    border-left: 4px solid #6C63FF;
+    backdrop-filter: blur(6px);
+}
+
+.app-section h2 {
+    color: #544DDF;
+    margin-bottom: 12px;
+    font-size: 26px;
+}
+
+/* DESCRIPTION */
+.app-desc {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #2F235A;
+}
+
+/* DETAILS */
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #E4E0FF;
+}
+
+.detail-label {
+    color: #6C63FF;
+    font-weight: 600;
+}
+
+.detail-value {
+    font-weight: 700;
+    color: #544DDF;
+}
+
+/* REVIEW FORM */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #f8f9ff;
+    padding: 25px;
+    border-radius: 18px;
+    border: 2px solid #e2ddff;
+}
+
+/* FIELD WRAPPER */
+.review-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* LABEL */
+.review-field label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #544DDF;
+    font-family: 'Jura', sans-serif;
+}
+
+/* SELECT (estimation) */
+.review-field select {
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 2px solid #d6d0ff;
+    background: white;
+
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Jura', sans-serif;
+    color: #544DDF;
+
+    transition: 0.25s ease;
+}
+
+.review-field select:focus {
+    border-color: #6C63FF;
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+    outline: none;
+}
+
+/* TEXTAREA */
+.review-field textarea {
+    min-height: 160px; /* фиксированная высота */
+    max-height: 160px; /* не растягивается */
+    resize: none;      /* отключаем изменение размера */
+
+    padding: 14px;
+    border-radius: 14px;
+    border: 2px solid #d6d0ff;
+    background: white;
+
+    font-size: 15px;
+    line-height: 1.5;
+    font-family: 'Jura', sans-serif;
+    color: #333;
+
+    transition: 0.25s ease;
+}
+
+.review-field textarea:focus {
+    border-color: #6C63FF;
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+    outline: none;
+}
+
+/* BUTTON */
+.btn-review {
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #6C63FF, #544DDF);
+    border: none;
+    border-radius: 14px;
+
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Jura', sans-serif;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+    box-shadow: 0 5px 18px rgba(108, 99, 255, 0.3);
+}
+
+.btn-review:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 26px rgba(108, 99, 255, 0.38);
+}
+
+.review {
+    background: rgba(255,255,255,0.8);
+    padding: 18px;
+    border-radius: 14px;
+    margin-top: 12px;
+    box-shadow: 0 4px 14px rgba(108, 99, 255, 0.15);
+}
+
+.review-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #45A29E;
+}
+
+.review-author {
+    font-weight: 600;
+    color: #544DDF;
+}
+
+.review-text {
+    margin-top: 4px;
+    font-size: 17px;
+    color: #333;
+}
+
+.review-date {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-top: 6px;
+}
+
+.review-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 160px;
+    padding: 12px 16px;
+    padding-right: 40px;
+
+    border-radius: 12px;          /* ← закругление */
+    border: 2px solid #d8d4ff;
+
+    background: #ffffff url("data:image/svg+xml;utf8,<svg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1 1L6 6L11 1' stroke='%23544DDF' stroke-width='2' stroke-linecap='round'/></svg>") 
+        no-repeat right 14px center;
+
+    font-size: 17px;
+    font-weight: 600;
+    color: #544DDF;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.12);
+}
+
+.review-select:hover {
+    border-color: #b7afff;
+    box-shadow: 0 6px 16px rgba(108, 99, 255, 0.2);
+}
+
+.review-select:focus {
+    outline: none;
+    border-color: #6c63ff;
+    background-color: #faf9ff;
+}
