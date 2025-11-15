@@ -50,17 +50,35 @@ def apps_view(request: HttpRequest) -> HttpResponse:
 def app_detail_view(request: HttpRequest, app_id: str)-> HttpResponse:
     try:
         app = App.objects.get(id=app_id)
-        context = {
-            'app': app
-        }
-        return render(request, 'app_detail.html', context)
+        return render(request, 'app_detail.html', {
+            'app': app,
+            'estimations': AppEstimation.objects.filter(app=app)
+        })
     except App.DoesNotExist:
         return render(request, '404.html', status=404)
     
 
-def categories_view(request):
-    categories = AppCategory.objects.prefetch_related('appsubcategory_set').all()
-    return render(request, 'category_list.html', {'categories': categories})
+# def categories_view(request):
+#     categories = AppCategory.objects.prefetch_related('appsubcategory_set').all()
+#     return render(request, 'category_list.html', {'categories': categories})
+
+def category_view(request: HttpRequest) -> HttpResponse:
+    categories = AppCategory.objects.all()
+
+    context = {'categories': categories}
+
+    if request.method == 'POST':
+        if category_id := request.POST.get('category_id'):
+            selected_category = AppCategory.objects.get(id=category_id)
+            context['selected_category'] = selected_category
+            context['subcategories'] = AppSubcategory.objects.filter(category=selected_category)
+        elif subcategory_id := request.POST.get('subcategory_id'):
+            subcategory = AppSubcategory.objects.get(id=subcategory_id)
+            context['selected_category'] = subcategory.category
+            context['subcategories'] = AppSubcategory.objects.filter(category=subcategory.category)
+            context['apps'] = App.objects.filter(subcategory=subcategory)
+    
+    return render(request, 'category_list.html', context)
 
 
 def apps_for_category_view(request):
@@ -108,3 +126,5 @@ def developer_view(request: HttpRequest, dev_id: str) -> HttpResponse:
         return render(request, 'developer_page.html', context)
     except App.DoesNotExist:
         return render(request, '404.html', status=404)
+
+
