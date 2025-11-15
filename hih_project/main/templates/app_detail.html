@@ -35,16 +35,13 @@
         </div>
     </div>
 
-    <!-- ОБЁРТКА -->
     <div class="app-content">
 
-        <!-- ОПИСАЛОВО -->
         <section class="app-section">
             <h2>Описание</h2>
             <p class="app-desc">{{ app.description }}</p>
         </section>
 
-        <!-- КАРУСЕЛЬ -->
         {% if app_preview_images %}
             <section class="app-section">
                 <h2>Скриншоты</h2>
@@ -65,7 +62,6 @@
             </section>
         {% endif %}
 
-        <!-- DETAILS -->
         <section class="app-section">
             <h2>Информация</h2>
 
@@ -93,7 +89,6 @@
             </div>
         </section>
 
-        <!-- REVIEWS -->
         <section class="review-section">
             <h2 style="color:#544DDF;">Отзывы</h2>
 
@@ -102,13 +97,11 @@
                 <form method="post" class="review-form">
                     {% csrf_token %}
 
-                    <!-- ОЦЕНКА -->
                     <div class="review-field">
                         <label for="{{ form.estimation.id_for_label }}">Оценка</label>
                         {{ form.estimation }}
                     </div>
 
-                    <!-- ОТЗЫВ -->
                     <div class="review-field">
                         <label for="{{ form.estimation_content.id_for_label }}">Ваш отзыв</label>
                         {{ form.content }}
@@ -127,7 +120,6 @@
                 <p class="review-login">Войдите, чтобы оставить отзыв</p>
             {% endif %}
 
-            <!-- Вывод отзывов -->
             {% for estimation in estimations %}
                 {% if estimation.author and estimation.content %}
                     <div class="review">

@@ -11,8 +11,6 @@
 
         
         {% if user.is_authenticated %}
-
-        <!-- HEADER -->
         <div class="acc-header">
 
             <div class="acc-user">
@@ -35,8 +33,6 @@
                     <a href="{% url 'logout' %}" class="acc-btn acc-btn-secondary">Выйти</a>
                 </div>
             </div>
-
-            <!-- Stats -->
             <div class="acc-stats">
                 <div class="acc-stat">
                     <div class="acc-stat-num">{{ user.bought_apps|length }}</div>
@@ -52,8 +48,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- SECTIONS -->
         <div class="acc-sections">
 
             <!-- Bought apps -->
@@ -82,8 +76,6 @@
                     {% endif %}
                 </div>
             </div>
-
-            <!-- Achievements -->
             <div class="acc-section">
                 <h2 class="acc-section-title">Достижения</h2>
 
@@ -106,8 +98,6 @@
                     {% endif %}
                 </div>
             </div>
-
-            <!-- Reviews -->
             <div class="acc-section">
                 <h2 class="acc-section-title">Ваши оценки</h2>
 
@@ -133,8 +123,6 @@
         </div>
 
         {% else %}
-
-        <!-- Not authenticated -->
         <div class="acc-header">
             <div class="acc-empty">
                 <div class="acc-empty-icon">🔒</div>

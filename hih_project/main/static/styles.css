@@ -9,8 +9,6 @@ body {
     background: #f5f5f5;
 }
 
-/* Header Styles */
-
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -120,7 +118,6 @@ body {
     cursor: pointer;
 }
 
-/* Main content with padding for fixed header */
 .main-content {
     margin-top: 70px;
     padding: 2rem;
@@ -137,7 +134,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
     .header-container {
         height: 60px;
@@ -186,8 +182,6 @@ body {
     }
 }
 
-
-/* Стили для главной страницы приложений */
 .apps_page_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -236,7 +230,7 @@ body {
 }
 
 .apps_page_rating {
-    color: #1BC6A6; /* зелёный как на скрине */
+    color: #1BC6A6;
     margin-top: 4px;
     font-weight: 600;
 }
@@ -341,7 +335,7 @@ body {
     }
     .hello_page_content {
         opacity: 0;
-        transition: opacity 0.8s ease 0.5s; /* Задержка перед появлением контента */
+        transition: opacity 0.8s ease 0.5s;
     }
     .hello_page_loaded .hello_page_content {
         opacity: 1;
@@ -355,14 +349,12 @@ body {
         transform: translateY(0);
     }
 
-/* App For Category Page - Dark Theme */
 .app_for_category_page {
     min-height: 100vh;
     background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
     color: #ffffff;
 }
 
-/* Header */
 .app_for_category_page_header {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
@@ -408,21 +400,18 @@ body {
     transform: translateY(-2px);
 }
 
-/* Content */
 .app_for_category_page_content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
 }
 
-/* Grid */
 .app_for_category_page_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
 }
 
-/* Cards */
 .app_for_category_page_card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
@@ -457,7 +446,6 @@ body {
     box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
 }
 
-/* Card Content */
 .app_for_category_page_card_icon {
     text-align: center;
     margin-bottom: 20px;
@@ -982,7 +970,7 @@ body {
 
 .account_page-container {
     padding: 40px 20px;
-    color: #333; /* Основной цвет текста */
+    color: #333;
 }
 
 .account_page-content {
@@ -996,7 +984,7 @@ body {
     padding: 30px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
-    color: #333; /* Цвет текста для header */
+    color: #333;
 }
 
 .account_page-welcome {
@@ -1193,7 +1181,7 @@ body {
 .account_page-empty-state {
     text-align: center;
     padding: 40px 20px;
-    color: #666; /* Цвет текста для пустых состояний */
+    color: #666;
 }
 
 .account_page-empty-icon {
@@ -1202,7 +1190,6 @@ body {
     color: #999;
 }
 
-/* Явно задаем цвета для всех текстовых элементов */
 .account_page-container p,
 .account_page-container h1,
 .account_page-container h2,
@@ -1212,7 +1199,6 @@ body {
     color: #333;
 }
 
-/* Для специальных случаев с светлым текстом */
 .account_page-button-primary,
 .account_page-avatar-placeholder {
     color: white !important;
@@ -1247,8 +1233,7 @@ body {
 
 .mini-carousel {
     max-width: 600px;
-    margin: 0 auto; /* центрирование */
-}
+    margin: 0 auto;
 
 .main-image {
     width: 100%;

@@ -7,7 +7,6 @@
 
 {% block content %}
 <div class="app_for_category_page">
-    <!-- Заголовок с фильтрами -->
     <div class="app_for_category_page_header">
         <div class="app_for_category_page_header_content">
             <h1 class="app_for_category_page_title">
@@ -27,14 +26,12 @@
                 Найдено игр: {{ apps|length }}
             </p>
             
-            <!-- Кнопка возврата -->
             <a href="{% url 'category_list' %}" class="app_for_category_page_back_btn">
                 ← Выбрать другую категорию
             </a>
         </div>
     </div>
 
-    <!-- Сетка игр -->
     <div class="app_for_category_page_content">
         {% if apps %}
         <div class="app_for_category_page_grid">
@@ -73,8 +70,8 @@
             <div class="app_for_category_page_empty_icon">🎮</div>
             <h2>Игры не найдены</h2>
             <p>В выбранной категории пока нет игр</p>
-<a href="{% url 'category_list' %}" class="app_for_category_page_back_btn">
-    ← Выбрать другую категори
+            <a href="{% url 'category_list' %}" class="app_for_category_page_back_btn">
+                ← Выбрать другую категори
             </a>
         </div>
         {% endif %}
