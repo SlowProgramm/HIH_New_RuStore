@@ -1,10 +1,5 @@
 from django.db.models import CharField, TextField, Model, IntegerField, PositiveBigIntegerField, FloatField, ImageField, DateTimeField, ForeignKey, CASCADE, PROTECT
-from django.contrib.auth.models import User, AbstractUser
-
-
-def user_path(instance: 'AppDeveloper', filename: str) -> str:
-    return f'user_{instance.id}/{filename}'
-
+from django.contrib.auth.models import User
 
 def icon_path(_, filename: str) -> str:
     return f'icons/{filename}'
@@ -22,10 +17,15 @@ def app_preview_image_path(instance: 'AppPreviewImage', filename: str) -> str:
     return app_path(instance.app, f'preview_images/{filename}')
 
 
-class StoreUser(AbstractUser):
-    avatar: ImageField = ImageField(blank=True, upload_to=user_path)
+class Task(Model):
+    title: CharField = CharField('Название', max_length=50)
+    task: TextField = TextField('Описание')
+
+    def __str__(self) -> str:
+        return self.title
 
 
+# Категории, подкатегории, возрастные рейтинги, разработчики, приложения, достижения
 
 class AppCategory(Model):
     name: CharField = CharField(max_length=100, unique=True)
@@ -64,7 +64,6 @@ class AppDeveloper(Model):
 
     def __str__(self) -> str:
         return f'AppDeveloper(name={self.name})'
-
 
 class App(Model):
     name: CharField = CharField(max_length=256)
@@ -110,7 +109,3 @@ class AppPreviewImage(Model):
     app: ForeignKey = ForeignKey(App, CASCADE)
     place: IntegerField = IntegerField()
     source: ImageField = ImageField(default=None, upload_to=app_preview_image_path)
-
-
-class Achievements(Model):
-    pass
