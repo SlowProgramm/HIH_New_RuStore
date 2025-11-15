@@ -6,40 +6,44 @@
 
 {% block content %}
 
-<div class="search-wrapper">
+<div class="search-page">
+
     <form action="" method="post" class="search-bar">
         {% csrf_token %}
         {{ form.search_request }}
-        <div class="search-sorting-methods-wrapper">
-            <label for="{{ form.search_sorting_method.id_for_label }}">Сортировать по</label>
+
+        <div class="search-sort">
+            <label for="{{ form.search_sorting_method.id_for_label }}" class="search-sort-label">
+                Сортировать по
+            </label>
             {{ form.search_sorting_method }}
         </div>
+
         <button type="submit" class="search-submit">🔎</button>
     </form>
 
     {% if apps %}
-        <div class="app-grid">
+        <div class="apps-grid">
             {% for app in apps %}
-                <div class="app-grid__item">
+                <div class="apps-grid-item">
                     <a href="{% url 'app_detail' app_id=app.id %}" class="app-card">
 
-                        <img src="{{ app.icon.url }}" alt="" class="app-card__icon">
+                        <img src="{{ app.icon.url }}" alt="" class="app-card-icon">
 
-                        <div class="app-card__info">
-                            <h2 class="app-card__title">{{ app.name }}</h2>
-                            <p class="app-card__category">{{ app.subcategory.name }}</p>
+                        <div class="app-card-info">
+                            <h2 class="app-card-title">{{ app.name }}</h2>
+                            <p class="app-card-category">{{ app.subcategory.name }}</p>
 
-                            <div class="app-card__rating">
-                                <p class="app-card__rating-value">⭐ {{ app.rating|floatformat:1 }}</p>
-                            </div>
+                            <p class="app-card-rating">⭐ {{ app.rating|floatformat:1 }}</p>
                         </div>
                     </a>
                 </div>
             {% endfor %}
         </div>
+
     {% elif search_request %}
-        <div class="search-nothing-find-wrapper">
-            Нихуя не нашёл, пиздуйте нахуй
+        <div class="search-empty">
+            Ничего не найдено.
         </div>
     {% endif %}
 </div>
