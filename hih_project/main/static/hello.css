@@ -1,0 +1,16 @@
+.store {
+	font-size: 65px;
+
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+.text {
+	font-size: 40px;
+
+	text-decoration: underline #45A29E;
+}
+
+.hbody {
+	margin-left: 20px;
+}

@@ -7,33 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
 
-     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'glb.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'hello.css' %}">
+    <link rel="stylesheet" href="{% static 'catalog.css' %}">
 </head>
-<body>
+<body class="body">
     <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🚀</span>
-                MySite
+        <div style="display: flex; align-items: center;">
+            <a href="index.html" class="logo noDec">
+                <img src="{% static 'src/RuStore_logo.png' %}" class="logoImg">
+                <h4 class="siteName">RuStore</h4>
             </a>
-            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
-            <nav>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="{% url 'home' %}" class="nav-link active">Все Tasks</a></li>
-                    <li><a href="{% url 'about' %}" class="nav-link">О нас</a></li>
-                    <li><a href="{% url 'create' %}" class="nav-link">Создать Task</a></li>
-                    
-                    <div class="auth-buttons">
-                        <a href="{% url 'login' %}" class="btn btn-login">Войти</a>
-                        <a href="{% url 'signup' %}" class="btn btn-signup">Регистрация</a>
-                        <a href="{% url 'account' %}" class="btn btn-account">Личный кабинет</a>
-                        <a href="{% url 'apps' %}" class="btn btn-account">Библиотека</a>
-                    </div>
-                </ul>
+            <nav class="menu">
+                <a href="{% url 'home' %}" class="noDec"><h3 class="nav">Каталог</h3></a>
+                <a href="{% url 'about' %}" class="noDec"><h3 class="nav">Категории</h3></a>
+                <a href="{% url 'create' %}" class="noDec"><h3 class="nav">Установленные</h3></a>
             </nav>
+            <button></button>
         </div>
     </header>
-{% block content %} 
-{% endblock %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
+
+
+<div class="header-container">
+    <nav class="menu">
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="{% url 'home' %}" class="nav-link active">Все Tasks</a></li>
+            <li><a href="{% url 'about' %}" class="nav-link">О нас</a></li>
+            <li><a href="{% url 'create' %}" class="nav-link">Создать Task</a></li>
+            
+            <div class="auth-buttons">
+                <a href="{% url 'login' %}" class="btn btn-login">Войти</a>
+                <a href="{% url 'signup' %}" class="btn btn-signup">Регистрация</a>
+                <a href="{% url 'account' %}" class="btn btn-account">Личный кабинет</a>
+                <a href="{% url 'apps' %}" class="btn btn-account">Библиотека</a>
+            </div>
+        </ul>
+    </nav>
+</div>
