@@ -1,0 +1,61 @@
+header {
+    margin-top: 20px;
+}
+
+.noDec {
+    text-decoration: none;
+}
+
+.logo {
+    margin-left: 20px;
+
+    display: flex;
+    
+    width: fit-content;
+
+    transition: transform 0.8s;
+}
+
+.logo:hover {
+    transform: scale(104%);
+}
+
+.logoImg {
+    margin-right: 10px;
+
+    width: 50px;
+    height: 50px;
+
+    filter: drop-shadow(2px 2px 0px rgba(102, 252, 241, 0.50));
+}
+
+.siteName {
+    font-size: 40px;
+    font-weight: normal;
+    font-style: normal;
+
+    text-shadow: 2px 2px 0px rgba(102, 252, 241, 0.50);
+}
+
+.nav {
+    transition: transform 0.8s;
+
+    display: inline-block;
+
+    font-size: 25px;
+    font-weight: normal;
+    font-style: normal;
+
+    text-shadow: 2px 2px 0px rgba(102, 252, 241, 0.50);
+}
+
+.nav:hover {
+    transform: scale(1.04);
+}
+
+.menu {
+    display: flex;
+
+    margin: 0 auto;
+    gap: 0 90px;
+}

@@ -7,14 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
 
-     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'glb.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'hello.css' %}">
+    <link rel="stylesheet" href="{% static 'catalog.css' %}">
 </head>
-<body>
+<body class="body">
     <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🚀</span>
-                MySite
+        <div style="display: flex; align-items: center;">
+            <a href="index.html" class="logo noDec">
+                <img src="{% static 'src/RuStore_logo.png' %}" class="logoImg">
+                <h4 class="siteName">RuStore</h4>
             </a>
             <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
             <nav>
@@ -29,10 +32,17 @@
                         <a href="{% url 'apps' %}" class="btn btn-account">Библиотека</a>
                     </div>
                 </ul>
+            <nav class="menu">
+                <a href="{% url 'home' %}" class="noDec"><h3 class="nav">Каталог</h3></a>
+                <a href="{% url 'about' %}" class="noDec"><h3 class="nav">Категории</h3></a>
+                <a href="{% url 'create' %}" class="noDec"><h3 class="nav">Установленные</h3></a>
             </nav>
+            <button></button>
         </div>
     </header>
-{% block content %} 
-{% endblock %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
