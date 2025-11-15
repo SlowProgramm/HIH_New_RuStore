@@ -51,13 +51,13 @@ class StoreUser(AbstractUser):
         subcategories_counter = Counter(self.history)
 
         for subcategory, total in subcategories_counter.most_common():
-            if len(personal_top_apps) == 10:
+            if len(personal_top_apps) == 9:
                 break
-            apps_to_choose_amount = max(1, 10 * (total / history_length))
-            apps_to_choose_amount = min(round(apps_to_choose_amount), 10 - len(personal_top_apps))
+            apps_to_choose_amount = max(1, 9 * (total / history_length))
+            apps_to_choose_amount = min(round(apps_to_choose_amount), 9 - len(personal_top_apps))
             print(subcategory, apps_to_choose_amount)
             personal_top_apps.extend(App.objects.get_queryset().order_by('-rating', '-downloads').filter(subcategory__id=subcategory).all()[:apps_to_choose_amount])
-        
+
         return personal_top_apps
 
     def __str__(self) -> str:
