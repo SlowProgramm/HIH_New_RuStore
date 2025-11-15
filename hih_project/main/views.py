@@ -81,6 +81,7 @@ def category_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'category_list.html', context)
 
 
+
 def apps_for_category_view(request):
     category_id = request.GET.get('category')
     subcategory_id = request.GET.get('subcategory')
