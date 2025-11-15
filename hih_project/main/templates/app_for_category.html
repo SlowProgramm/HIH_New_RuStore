@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Игры - HiH Store
+{% endblock %}
+
+{% block content %}
+<div class="app_for_category_page">
+    <!-- Заголовок с фильтрами -->
+    <div class="app_for_category_page_header">
+        <div class="app_for_category_page_header_content">
+            <h1 class="app_for_category_page_title">
+                {% if apps %}
+                    {% if apps.0.subcategory %}
+                        {{ apps.0.subcategory.name }}
+                    {% elif apps.0.subcategory.category %}
+                        {{ apps.0.subcategory.category.name }}
+                    {% else %}
+                        Все игры
+                    {% endif %}
+                {% else %}
+                    Игры не найдены
+                {% endif %}
+            </h1>
+            <p class="app_for_category_page_subtitle">
+                Найдено игр: {{ apps|length }}
+            </p>
+            
+            <!-- Кнопка возврата -->
+            <a href="{% url 'category_list' %}" class="app_for_category_page_back_btn">
+                ← Выбрать другую категорию
+            </a>
+        </div>
+    </div>
+
+    <!-- Сетка игр -->
+    <div class="app_for_category_page_content">
+        {% if apps %}
+        <div class="app_for_category_page_grid">
+            {% for app in apps %}
+            <a href="{% url 'app_detail' app_id=app.id %}" class="app_for_category_page_card">
+                <div class="app_for_category_page_card_icon">
+                    {% if app.icon %}
+                        <img src="{{ app.icon.url }}" alt="{{ app.name }}" class="app_for_category_page_icon_img">
+                    {% else %}
+                        <div class="app_for_category_page_icon_placeholder">📱</div>
+                    {% endif %}
+                </div>
+                
+                <div class="app_for_category_page_card_content">
+                    <h3 class="app_for_category_page_card_title">{{ app.name }}</h3>
+                    <p class="app_for_category_page_card_developer">{{ app.developer.name }}</p>
+                    
+                    <div class="app_for_category_page_card_meta">
+                        <div class="app_for_category_page_rating">
+                            ⭐ {{ app.rating|floatformat:1 }}
+                        </div>
+                        <div class="app_for_category_page_downloads">
+                            📥 {{ app.downloads }}
+                        </div>
+                    </div>
+                    
+                    <div class="app_for_category_page_card_category">
+                        {{ app.subcategory.name }}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="app_for_category_page_empty">
+            <div class="app_for_category_page_empty_icon">🎮</div>
+            <h2>Игры не найдены</h2>
+            <p>В выбранной категории пока нет игр</p>
+<a href="{% url 'category_list' %}" class="app_for_category_page_back_btn">
+    ← Выбрать другую категори
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
