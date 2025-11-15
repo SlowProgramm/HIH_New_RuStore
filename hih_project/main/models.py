@@ -70,7 +70,7 @@ class App(Model):
     """App name."""
     description: TextField = TextField()
     """App description."""
-    icon: ImageField = ImageField(default=None, upload_to=app_path)
+    icon: ImageField = ImageField(default=None, upload_to=app_path, blank=True)
     rating: FloatField = FloatField(default=0.0)
     """App rating from 0.0 to 5.0."""
     estimations_count: PositiveBigIntegerField = PositiveBigIntegerField(default=0)
