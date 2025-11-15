@@ -8,9 +8,15 @@
 
 	text-shadow: 2px 2px 0px rgba(102, 252, 241, 0.50);
 }
-
-.content {
+.content{
 	display: flex;
+}
+
+
+.content2 {
+	display: flex;
+	width: 100%;
+	 flex-wrap: wrap;
 }
 
 .gameInt {
@@ -26,13 +32,22 @@
 
 .gameTop {
 	display: flex;
-
 	margin: 5px 10px;
 
 	border-radius: 20px;
 
-	width: 400px;
+
 	height: 80px;
+	
+}
+
+.cards_div{
+	/* background-color: red; */
+	margin-bottom: 20px;
+	display: flex;
+    flex: 0 0 calc(33.333% - 20px); /* 3 карточки в строке */
+    min-width: 300px; /* Минимальная ширина */
+    box-sizing: border-box; /* Учитывать padding и border в ширине */
 }
 
 .gameLogo {
@@ -53,17 +68,23 @@
 }
 
 .appTitle {
-	
+
 }
 
-.description {
+.category {
 	font-size: 18px;
+	color: #C5C6C7;
 }
 
-.rating {
+.rating_div {
 	display: flex;
 	flex-direction: row;
-	align-content: center
+	align-content: center;
+}
+
+.rating_text{
+	color:#45A29E;
+	font-family: 10px;
 }
 
 .star {
@@ -71,4 +92,7 @@
 	height: 20px;
 
 	margin-right: 10px;
+}
+a{
+text-decoration: none;
 }
