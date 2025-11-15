@@ -64,8 +64,7 @@
                         <p class="app-card__category">{{ app.subcategory.name }}</p>
 
                         <div class="app-card__rating">
-                            <img src="{% static 'src/star.png' %}" class="app-card__rating-star" alt="">
-                            <p class="app-card__rating-value">{{ app.rating }}</p>
+                            <p class="app-card__rating-value">⭐ {{ app.rating|floatformat:1 }}</p>
                         </div>
                     </div>
 

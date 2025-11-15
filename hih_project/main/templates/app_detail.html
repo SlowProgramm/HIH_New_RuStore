@@ -2,77 +2,98 @@
 {% load static %}
 
 {% block title %}
-{{ app.name }} - HiH Store
+{{ app.name }} • RuStore
 {% endblock %}
 
 {% block content %}
-<div class="app_detail_page">
-    <div class="app_detail_page_header">
-        <div class="app_detail_page_icon">
+<div class="app-page">
+
+    <!-- HEADER -->
+    <div class="app-header">
+        <div class="app-icon">
             {% if app.icon %}
-                <img src="{{ app.icon.url }}" alt="{{ app.name }}" class="app_detail_page_icon_img">
+                <img src="{{ app.icon.url }}" alt="{{ app.name }}" class="app-icon__img">
             {% else %}
-                <div class="app_detail_page_icon_placeholder">📱</div>
+                <div class="app-icon__placeholder">📱</div>
             {% endif %}
         </div>
-        
-        <div class="app_detail_page_info">
-            <h1 class="app_detail_page_title">{{ app.name }}</h1>
-            <a href="{% url 'developer' dev_id=app.developer.id %}" class="app_detail_page_developer">Разработчик: <span style="color:slateblue"><b>{{ app.developer.name }}</b></span> </a>
-            <br><br>
-            <div class="app_detail_page_meta">
-                <div class="app_detail_page_rating">Рейтинг: {{ app.rating|floatformat:1 }} <span>({{ app.estimations_count }})</span></div>
-                <div class="app_detail_page_downloads">Скачиваний: {{ app.downloads }}</div>
-                <div class="app_detail_page_size">Вес: {{ app.size|filesizeformat }}</div>
+
+        <div class="app-info">
+            <h1 class="app-title">{{ app.name }}</h1>
+
+            <a href="{% url 'developer' dev_id=app.developer.id %}" class="app-dev">
+                Разработчик: <span>{{ app.developer.name }}</span>
+            </a>
+
+            <div class="app-meta">
+                <div class="meta-item">⭐ {{ app.rating|floatformat:1 }} <span>({{ app.estimations_count }})</span></div>
+                <div class="meta-item">⬇ {{ app.downloads }}</div>
+                <div class="meta-item">📦 {{ app.size|filesizeformat }}</div>
             </div>
-            
-            <button class="app_detail_page_download_btn">Скачать бесплатно</button>
+
+            <button class="btn-download">Скачать бесплатно</button>
         </div>
     </div>
 
-    <!-- Контент -->
-    <div class="app_detail_page_content">
-        <!-- Описание -->
-        <div class="app_detail_page_section">
-            <h2>Описание</h2>
-            <p class="app_detail_page_description">{{ app.description }}</p>
-        </div>
+    <!-- CONTENT -->
+    <div class="app-content">
 
-        <!-- Детали -->
-        <div class="app_detail_page_section">
+        <!-- DESCRIPTION -->
+        <section class="app-section">
+            <h2>Описание</h2>
+            <p class="app-desc">{{ app.description }}</p>
+        </section>
+
+        <!-- DETAILS -->
+        <section class="app-section">
             <h2>Информация</h2>
-            <div class="app_detail_page_details">
-                <div class="app_detail_page_detail_item">
-                    <span class="app_detail_page_detail_label">::Жанр:</span>
-                    <span class="app_detail_page_detail_value">{{ app.subcategory.category.name }}</span>
+
+            <div class="details-list">
+                <div class="detail-item">
+                    <span class="detail-label">Жанр:</span>
+                    <span class="detail-value">{{ app.subcategory.category.name }}</span>
                 </div>
-                <div class="app_detail_page_detail_item">
-                    <span class="app_detail_page_detail_label">Поджанр:</span>
-                    <span class="app_detail_page_detail_value">{{ app.subcategory.name }}</span>
+                <div class="detail-item">
+                    <span class="detail-label">Поджанр:</span>
+                    <span class="detail-value">{{ app.subcategory.name }}</span>
                 </div>
-                <div class="app_detail_page_detail_item">
-                    <span class="app_detail_page_detail_label">Разработчик:</span>
-                    <span class="app_detail_page_detail_value">{{ app.developer.name }}</span>
+                <div class="detail-item">
+                    <span class="detail-label">Разработчик:</span>
+                    <span class="detail-value">{{ app.developer.name }}</span>
                 </div>
-                <div class="app_detail_page_detail_item">
-                    <span class="app_detail_page_detail_label">Возраст:</span>
-                    <span class="app_detail_page_detail_value">{{ app.age_rating.min_age }}+</span>
+                <div class="detail-item">
+                    <span class="detail-label">Возраст:</span>
+                    <span class="detail-value">{{ app.age_rating.min_age }}+</span>
                 </div>
-                <div class="app_detail_page_detail_item">
-                    <span class="app_detail_page_detail_label">Просмотры:</span>
-                    <span class="app_detail_page_detail_value">{{ app.views }}</span>
+                <div class="detail-item">
+                    <span class="detail-label">Просмотры:</span>
+                    <span class="detail-value">{{ app.views }}</span>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="app_estimations_page_section">
-            <h2>Оставить отзыв</h2>
+        <!-- REVIEWS -->
+        <section class="review-section">
+            <h2 style="color:#544DDF;">Отзывы</h2>
+
             {% if user.is_authenticated %}
-                <form method="post">
+
+                <form method="post" class="review-form">
                     {% csrf_token %}
-                    {{ form.estimation }}
-                    {{ form.estimation_content }}
-                    <button type="submit" name="submit" value="estimate">
+
+                    <!-- ОЦЕНКА -->
+                    <div class="review-field">
+                        <label for="{{ form.estimation.id_for_label }}">Оценка</label>
+                        {{ form.estimation }}  <!-- красивый select -->
+                    </div>
+
+                    <!-- ОТЗЫВ -->
+                    <div class="review-field">
+                        <label for="{{ form.estimation_content.id_for_label }}">Ваш отзыв</label>
+                        {{ form.content }}
+                    </div>
+
+                    <button type="submit" class="btn-review">
                         {% if user_estimation_exists %}
                             Изменить отзыв
                         {% else %}
@@ -80,21 +101,24 @@
                         {% endif %}
                     </button>
                 </form>
+
             {% else %}
-                <span>Войдите, чтобы оставить отзыв!</span>
+                <p class="review-login">Войдите, чтобы оставить отзыв</p>
             {% endif %}
-            <h2>Отзывы</h2>
+
+            <!-- Вывод отзывов -->
             {% for estimation in estimations %}
                 {% if estimation.author and estimation.content %}
-                    <div class="app_estimation">
-                        <span class="app_estimation_value">{{ estimation.estimation }}</span>
-                        <span class="app_estimation_author_name">{{ estimation.author.username }}</span>
-                        <span class="app_estimation_content">{{ estimation.content }}</span>
-                        <span class="app_estimation_publishing_date">{{ estimation.published_at|date:"d F Y H:i" }}</span>
+                    <div class="review">
+                        <div class="review-score">⭐ {{ estimation.estimation }}</div>
+                        <div class="review-author">{{ estimation.author.username }}</div>
+                        <div class="review-text">{{ estimation.content }}</div>
+                        <div class="review-date">{{ estimation.published_at|date:"d F Y H:i" }}</div>
                     </div>
                 {% endif %}
             {% endfor %}
-        </div>
+        </section>
+
     </div>
 </div>
 {% endblock %}

@@ -64,9 +64,34 @@ class LoginForm(AuthenticationForm):
     password: CharField = CharField(label='Пароль', widget=PasswordInput)
 
 
-class EstimationForm(Form):
-    estimation = IntegerField(max_value=5, min_value=1, required=True)
-    estimation_content = CharField(max_length=1000, widget=Textarea(attrs={
-        'class': 'estimation_content',
-        'placeholder': 'Расскажите о ваших впечатлениях...'
-    }))
+class EstimationForm(forms.ModelForm):
+
+    estimation = forms.TypedChoiceField(
+        choices=[
+            (1, "1"),
+            (2, "2"),
+            (3, "3"),
+            (4, "4"),
+            (5, "5"),
+        ],
+        coerce=int,
+        label="Оценка",
+        widget=forms.Select(attrs={
+            "class": "review-select"
+        })
+    )
+
+    content = forms.CharField(
+        label="Ваш отзыв",
+        required=False,
+        widget=forms.Textarea(attrs={
+            "class": "review-textarea",
+            "rows": 4,
+            "maxlength": 500,
+            "placeholder": "Напишите ваш отзыв…"
+        })
+    )
+
+    class Meta:
+        model = AppEstimation
+        fields = ["estimation", "content"]

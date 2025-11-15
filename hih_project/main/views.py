@@ -174,7 +174,7 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
         form = EstimationForm(request.POST)
         if form.is_valid():
             form_estimation: float = form.cleaned_data['estimation']
-            form_estimation_content: str = form.cleaned_data['estimation_content']
+            form_estimation_content: str = form.cleaned_data['content']
             if estimation is not None:
                 app.rating = app.rating - (estimation.estimation - form_estimation) / app.estimations_count
                 app.save()
