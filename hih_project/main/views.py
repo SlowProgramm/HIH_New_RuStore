@@ -91,3 +91,22 @@ def apps_for_category_view(request):
         apps = apps.filter(subcategory__category_id=category_id)
     return render(request, 'apps.html', {'apps': apps})
 
+
+
+def apps_for_category_view(request: HttpRequest) -> HttpResponse:
+    subcategory_id = request.GET.get('subcategory')
+    apps = App.objects.select_related(
+        'subcategory', 
+        'subcategory__category', 
+        'developer'
+    ).all()
+    
+    if subcategory_id:
+        apps = apps.filter(subcategory_id=subcategory_id)
+    # Если подкатегория не выбрана, показываем все игры
+    context = {
+        'apps': apps,
+        'subcategory_id': subcategory_id,
+    }
+    
+    return render(request, 'app_for_category.html', context)

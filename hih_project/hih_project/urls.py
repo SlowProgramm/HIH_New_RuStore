@@ -13,8 +13,10 @@ urlpatterns = [
     path('account/', account_view, name='account'),
     path('admin/', admin.site.urls),
     path('apps/', apps_view, name='apps'),
-    path('app/<int:app_id>/', app_detail_view, name='app_detail'),  # Заменили заглушку
+    path('app/<int:app_id>/', app_detail_view, name='app_detail'), 
     path('categories/', categories_view, name='category_list'),
+    path('app_for_category/', apps_for_category_view, name='app_for_category'),
+
 ]
 
 if settings.DEBUG:
