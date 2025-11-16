@@ -18,8 +18,12 @@ urlpatterns = [
     path('app_for_category/', apps_for_category_view, name='app_for_category'),
     path('developer/<str:dev_id>/', developer_view, name='developer'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('search/', search_apps_view, name='search')
-]
+    path('search/', search_apps_view, name='search'),
+    path('onboarding/welcome/', onboarding_welcome, name='onboarding_welcome'),
+    path('onboarding/tour/', onboarding_tour, name='onboarding_tour'),
+    path('welcome', onboarding_welcome, name='onboarding_welcome'),
+]   
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

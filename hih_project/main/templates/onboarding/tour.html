@@ -1,0 +1,411 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    
+    <style>
+    /* Стили для прелоадера */
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #6C63FF 0%, #544DDF 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+
+    .logo-container {
+        text-align: center;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1.5s ease 0.3s forwards;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .logo {
+        max-width: 200px;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+    }
+
+    .logo-text {
+        margin-top: 20px;
+        font-family: 'Jura', sans-serif;
+        color: white;
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    /* Скрываем основной контент до завершения прелоадера */
+    .main-content {
+        display: none;
+    }
+
+    /* Стили для тура */
+    .onboarding-tour {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9998;
+        pointer-events: none;
+        display: none;
+    }
+
+    .tour-steps {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .tour-step {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .tour-step.active {
+        display: block;
+    }
+
+    .tour-highlight {
+        position: absolute;
+        background: rgba(108, 99, 255, 0.3);
+        border: 3px solid #6C63FF;
+        border-radius: 8px;
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+        transition: all 0.5s ease;
+        animation: pulse 2s infinite;
+        z-index: 9999;
+    }
+
+    @keyframes pulse {
+        0% { border-color: #6C63FF; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 20px rgba(108, 99, 255, 0.5); }
+        50% { border-color: #A393FF; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 30px rgba(163, 147, 255, 0.7); }
+        100% { border-color: #6C63FF; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 20px rgba(108, 99, 255, 0.5); }
+    }
+
+    .tour-tooltip {
+        position: absolute;
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        max-width: 350px;
+        z-index: 10000;
+        border: 2px solid #E2DDFF;
+        font-family: 'Jura', sans-serif;
+        pointer-events: auto;
+    }
+
+    .tour-tooltip h3 {
+        color: #544DDF;
+        margin-bottom: 12px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .tour-tooltip p {
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        font-size: 15px;
+    }
+
+    .tour-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .btn-prev, .btn-next, .btn-complete {
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        font-family: 'Jura', sans-serif;
+        font-size: 14px;
+        pointer-events: auto;
+    }
+
+    .btn-prev {
+        background: #f8f9fa;
+        color: #6C63FF;
+        border: 2px solid #E2DDFF;
+    }
+
+    .btn-prev:hover {
+        background: #E2DDFF;
+    }
+
+    .btn-next {
+        background: linear-gradient(135deg, #6C63FF, #544DDF);
+        color: white;
+    }
+
+    .btn-next:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+    }
+
+    .btn-complete {
+        background: linear-gradient(135deg, #45A29E, #1A936F);
+        color: white;
+    }
+
+    .btn-complete:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(69, 162, 158, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .tour-tooltip {
+            max-width: 280px;
+            padding: 20px;
+            left: 10px !important;
+            right: 10px !important;
+            margin: 0 auto;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- Мини-заставка (прелоадер) -->
+    <div id="preloader">
+        <div class="logo-container">
+            <img src="{% static 'src/RuStore_logo.png' %}" alt="Логотип RuStore" class="logo">
+            <div class="logo-text">RuStore</div>
+        </div>
+    </div>
+
+    <!-- Основной контент страницы -->
+    <div class="main-content">
+        <header class="header">
+            <div class="header__inner">
+
+                <!-- ЛОГО -->
+                <a href="{% url 'index' %}" class="header__logo">
+                    <img src="{% static 'src/RuStore_logo.png' %}" class="header__logo-img" alt="Логотип">
+                    <h4 class="header__logo-text">RuStore</h4>
+                </a>
+
+                <!-- МЕНЮ (ДЛЯ ДЕСКТОПА) -->
+                <nav class="nav" id="mainNav">
+                    <a href="{% url 'index' %}" class="nav__item">Главная</a>
+                    <a href="{% url 'apps' %}" class="nav__item">Каталог</a>
+                    <a href="{% url 'categories' %}" class="nav__item">Категории</a>
+                </nav>
+
+                <!-- ПОИСК + ЮЗЕР + БУРГЕР -->
+                <div class="header__right">
+                    <a href="{% url 'search' %}" class="search-btn">
+                        <img src="{% static 'src/search.png' %}" class="search-btn__icon" alt="">
+                        <span class="search-btn__text">Поиск</span>
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'account' %}" class="user-link">
+                            <img src="{% static 'src/avatar.png' %}" class="user" alt="">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'signup' %}" class="user-link">
+                            <img src="{% static 'src/avatar.png' %}" class="user" alt="">
+                        </a>
+                    {% endif %}
+
+                    <!-- БУРГЕР МЕНЮ (ДЛЯ МОБИЛЬНЫХ) -->
+                    <button class="burger-menu" id="burgerMenu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Тур поверх страницы -->
+        <div class="onboarding-tour" id="onboardingTour">
+            <!-- Шаги тура -->
+            <div class="tour-steps">
+                <!-- Шаг 1: Главная -->
+                <div class="tour-step step-1 active">
+                    <div class="tour-highlight" data-element='.nav__item[href="{% url 'index' %}"]'></div>
+                    <div class="tour-tooltip" style="top: 100px; left: 20px;">
+                        <h3>Главная страница</h3>
+                        <p>Перейдя по кнопке "Главная", ты узнаешь все что нужно о нас - новости, акции и важные обновления</p>
+                        <div class="tour-actions">
+                            <button class="btn-next" onclick="nextStep(2)">Далее →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 2: Каталог -->
+                <div class="tour-step step-2">
+                    <div class="tour-highlight" data-element='.nav__item[href="{% url 'apps' %}"]'></div>
+                    <div class="tour-tooltip" style="top: 100px; left: 20px;">
+                        <h3>Каталог приложений</h3>
+                        <p>Здесь ты увидишь персональные рекомендации (после регистрации) и топ приложений по оценкам пользователей</p>
+                        <div class="tour-actions">
+                            <button class="btn-prev" onclick="nextStep(1)">← Назад</button>
+                            <button class="btn-next" onclick="nextStep(3)">Далее →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 3: Категории -->
+                <div class="tour-step step-3">
+                    <div class="tour-highlight" data-element='.nav__item[href="{% url 'categories' %}"]'></div>
+                    <div class="tour-tooltip" style="top: 100px; left: 20px;">
+                        <h3>Категории</h3>
+                        <p>Выбирай приложения по конкретной теме - игры, образование, финансы и многое другое</p>
+                        <div class="tour-actions">
+                            <button class="btn-prev" onclick="nextStep(2)">← Назад</button>
+                            <button class="btn-next" onclick="nextStep(4)">Далее →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 4: Поиск -->
+                <div class="tour-step step-4">
+                    <div class="tour-highlight" data-element='.search-btn'></div>
+                    <div class="tour-tooltip" style="top: 100px; right: 20px;">
+                        <h3>Поиск приложений</h3>
+                        <p>Ищи приложения по названию, а также используй фильтры для точного поиска</p>
+                        <div class="tour-actions">
+                            <button class="btn-prev" onclick="nextStep(3)">← Назад</button>
+                            <button class="btn-next" onclick="nextStep(5)">Далее →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 5: Пользователь -->
+                <div class="tour-step step-5">
+                    <div class="tour-highlight" data-element='.user'></div>
+                    <div class="tour-tooltip" style="top: 100px; right: 20px;">
+                        <h3>Аккаунт</h3>
+                        <p>Здесь ты можешь зарегистрироваться или войти в аккаунт, чтобы получить персональные рекомендации и сохранить историю</p>
+                        <div class="tour-actions">
+                            <button class="btn-prev" onclick="nextStep(4)">← Назад</button>
+                            <button class="btn-complete" onclick="completeTour()">Завершить тур</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <script>
+    let currentStep = 1;
+
+    // Запуск прелоадера сразу при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        // Прелоадер уже виден по умолчанию
+        // Основной контент скрыт через CSS
+        
+        // Ждем 2.5 секунды и показываем основной контент
+        setTimeout(function() {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.querySelector('.main-content');
+            
+            // Плавно скрываем прелоадер
+            preloader.style.transition = 'opacity 0.8s ease';
+            preloader.style.opacity = '0';
+            
+            // Показываем основной контент
+            setTimeout(function() {
+                mainContent.style.display = 'block';
+                preloader.style.display = 'none';
+                
+                // После завершения прелоадера проверяем нужно ли показывать тур
+                if (!localStorage.getItem('onboardingCompleted')) {
+                    document.getElementById('onboardingTour').style.display = 'block';
+                    setTimeout(function() {
+                        updateHighlight();
+                    }, 100);
+                }
+            }, 800);
+        }, 2500); // Общее время показа прелоадера (2.5 секунды)
+    });
+
+    function nextStep(step) {
+        document.querySelector(`.step-${currentStep}`).classList.remove('active');
+        currentStep = step;
+        document.querySelector(`.step-${currentStep}`).classList.add('active');
+        updateHighlight();
+    }
+
+    function completeTour() {
+        localStorage.setItem('onboardingCompleted', 'true');
+        document.getElementById('onboardingTour').style.display = 'none';
+        window.location.href = "{% url 'index' %}";
+    }
+
+    function updateHighlight() {
+        const currentStepElement = document.querySelector(`.step-${currentStep}.active`);
+        const highlight = currentStepElement.querySelector('.tour-highlight');
+        const targetSelector = highlight.dataset.element;
+        
+        const targetElement = document.querySelector(targetSelector);
+        
+        if (targetElement) {
+            const rect = targetElement.getBoundingClientRect();
+            const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            
+            highlight.style.width = `${rect.width + 20}px`;
+            highlight.style.height = `${rect.height + 20}px`;
+            highlight.style.left = `${rect.left + scrollX - 10}px`;
+            highlight.style.top = `${rect.top + scrollY - 10}px`;
+        }
+    }
+
+    window.addEventListener('resize', updateHighlight);
+    window.addEventListener('scroll', updateHighlight);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' && currentStep < 5) {
+            nextStep(currentStep + 1);
+        } else if (e.key === 'ArrowLeft' && currentStep > 1) {
+            nextStep(currentStep - 1);
+        } else if (e.key === 'Escape') {
+            completeTour();
+        }
+    });
+    </script>
+
+</body>
+</html>

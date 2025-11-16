@@ -311,3 +311,15 @@ def search_apps_view(request: HttpRequest) -> HttpResponse:
         search_request = None
         apps = None
     return render(request, 'search.html', {'form': form, 'apps': apps, 'search_request': search_request})
+
+
+def onboarding_welcome(request):
+    """Приветственный экран onboarding"""
+    return render(request, 'onboarding/welcome.html')
+
+def onboarding_tour(request):
+    return render(request, 'onboarding/tour.html', {
+        'popular_apps': App.objects.order_by('-rating', '-downloads').all(),
+        'user_top_10_apps': request.user.get_personal_top_10_apps() if request.user.is_authenticated else ()
+    })
+

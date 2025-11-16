@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Добро пожаловать в RuStore{% endblock %}
+
+{% block content %}
+<div class="onboarding-overlay" id="onboardingOverlay">
+    <div class="onboarding-container">
+        <!-- Логотип RuStore -->
+        <div class="onboarding-logo">
+            <div class="logo-icon">📱</div>
+            <h1 class="logo-text">RuStore</h1>
+        </div>
+
+        <!-- Приветственный текст -->
+        <div class="onboarding-content">
+            <h2 class="welcome-title">Добро пожаловать в RuStore!</h2>
+            <p class="welcome-text">
+                Откройте для себя мир российских приложений. 
+                Здесь вы найдете лучшие приложения, игры и сервисы 
+                для вашего Android-устройства.
+            </p>
+        </div>
+
+        <!-- Кнопка начать -->
+        <div class="onboarding-actions">
+            <button class="btn-start" onclick="startOnboarding()">
+                Начать знакомство
+            </button>
+            <button class="btn-skip" onclick="skipOnboarding()">
+                Пропустить и перейти на сайт
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Основной контент (скрыт пока onboarding) -->
+<div id="mainContent" style="display: none;">
+    {% block main_content %}
+    <!-- Сюда подставится контент из дочерних шаблонов -->
+    {% endblock %}
+</div>
+
+<style>
+.onboarding-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6C63FF 0%, #544DDF 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Jura', sans-serif;
+}
+
+.onboarding-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 50px 40px;
+    text-align: center;
+    max-width: 500px;
+    margin: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.onboarding-logo {
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+}
+
+.logo-text {
+    font-size: 36px;
+    font-weight: 800;
+    color: #544DDF;
+    margin: 0;
+}
+
+.welcome-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2F235A;
+    margin-bottom: 20px;
+}
+
+.welcome-text {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.onboarding-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-start {
+    background: linear-gradient(135deg, #6C63FF, #544DDF);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+}
+
+.btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(108, 99, 255, 0.6);
+}
+
+.btn-skip {
+    background: transparent;
+    color: #6C63FF;
+    border: 2px solid #6C63FF;
+    padding: 14px 32px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-skip:hover {
+    background: #6C63FF;
+    color: white;
+}
+</style>
+
+<script src="{% static 'js/onboarding.js' %}"></script>
+<script>
+// Проверка при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    if (hasCompletedOnboarding()) {
+        // Если уже проходил - сразу показываем основной контент
+        showMainContent();
+    }
+    // Если не проходил - onboarding уже виден (по умолчанию)
+});
+
+function startOnboarding() {
+    // Скрываем приветственный экран
+    document.getElementById('onboardingOverlay').style.display = 'none';
+    
+    // Запускаем тур
+    startTour();
+}
+
+function skipOnboarding() {
+    setOnboardingCompleted();
+    window.location.href = "{% url 'index' %}";
+}
+
+function showMainContent() {
+    document.getElementById('onboardingOverlay').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+}
+</script>
+{% endblock %}
