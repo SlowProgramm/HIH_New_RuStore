@@ -10,8 +10,6 @@
     <br><br><br><br><br><br><br><br><br>
 
     <div class="register-container">
-
-        <!-- Левая сторона -->
         <div class="register-decor">
             <div class="register-decor-content">
                 <h1 class="register-decor-title">Добро пожаловать!</h1>
@@ -20,7 +18,6 @@
             </div>
         </div>
 
-        <!-- Правая сторона -->
         <div class="register-form-section">
             <div class="register-form-container">
 
@@ -30,7 +27,6 @@
                 <form method="post" class="register-form">
                     {% csrf_token %}
 
-                    <!-- username -->
                     <div class="register-form-group">
                         <label for="{{ form.username.id_for_label }}" class="register-label">
                             Имя пользователя
@@ -45,7 +41,6 @@
                         {% endif %}
                     </div>
 
-                    <!-- password1 -->
                     <div class="register-form-group">
                         <label for="{{ form.password1.id_for_label }}" class="register-label">
                             Пароль
@@ -62,7 +57,6 @@
                         {% endif %}
                     </div>
 
-                    <!-- password2 -->
                     <div class="register-form-group">
                         <label for="{{ form.password2.id_for_label }}" class="register-label">
                             Подтверждение пароля

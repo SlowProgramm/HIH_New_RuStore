@@ -1,5 +1,3 @@
-/* ======= ОБЩАЯ ОБЁРТКА ======= */
-
 .search-page {
     width: 100%;
     padding: 40px 20px;
@@ -7,10 +5,6 @@
     flex-direction: column;
     gap: 40px;
 }
-
-
-
-/* ======= ПОИСКОВАЯ ПАНЕЛЬ ======= */
 
 .search-bar {
     width: 100%;
@@ -28,7 +22,6 @@
     border: 2px solid #544DDF;
 }
 
-/* Инпут поиска */
 .search-bar input[type="text"],
 .search-bar input {
     flex: 1;
@@ -46,7 +39,6 @@
     outline: none;
 }
 
-/* Блок сортировки */
 .search-sort {
     display: flex;
     flex-direction: column;
@@ -58,7 +50,6 @@
     font-size: 0.9rem;
 }
 
-/* Селект */
 .search-sort select {
     padding: 10px 14px;
     border-radius: 10px;
@@ -72,9 +63,6 @@
     border-color: #667eea;
 }
 
-
-
-/* КНОПКА 🔍 */
 .search-submit {
     padding: 14px 18px;
     border-radius: 12px;
@@ -94,10 +82,6 @@
     box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
 }
 
-
-
-/* ======= СЕТКА ПРИЛОЖЕНИЙ ======= */
-
 .apps-grid {
     width: 100%;
     max-width: 1200px;
@@ -108,7 +92,6 @@
     gap: 25px;
 }
 
-/* Карточка */
 .app-card {
     display: block;
     background: #fafafa;
@@ -127,7 +110,6 @@
     border-color: #d6d6d6;
 }
 
-/* Иконка */
 .app-card-icon {
     width: 100%;
     height: 140px;
@@ -135,7 +117,6 @@
     border-radius: 12px;
 }
 
-/* Информация */
 .app-card-info {
     margin-top: 12px;
     display: flex;
@@ -159,10 +140,6 @@
     font-size: 0.95rem;
     color: #000;
 }
-
-
-
-/* ======= НИЧЕГО НЕ НАЙДЕНО ======= */
 
 .search-empty {
     text-align: center;

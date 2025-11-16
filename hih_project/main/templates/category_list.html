@@ -8,13 +8,11 @@
 {% block content %}
 <div class="cat-page">
 
-    <!-- Заголовок -->
     <h1 class="cat-title">Выберите категорию</h1>
 
     <form method="post" class="cat-form">
         {% csrf_token %}
 
-        <!-- Категории -->
         <div class="cat-grid">
             {% for category in categories %}
                 <button type="submit"

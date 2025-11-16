@@ -6,11 +6,13 @@ from django.utils import timezone
 from django.contrib.auth import login, authenticate
 from django.db.models.functions import Lower
 from datetime import datetime
+
+import urllib
 from .models import *
 from .forms import *
 import os
 import random
-import shutil
+import urllib.parse
 from django.core.files import File
 from django.conf import settings
 
@@ -205,7 +207,8 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
         'user_estimation_exists': estimation is not None,
         'estimations': AppEstimation.objects.filter(app=app),
         'app_preview_images': app.query_preview_images(),
-        'form': form
+        'form': form,
+        'app_download_link': f'https://www.rustore.ru/catalog/search?query={urllib.parse.quote(app.name)}'
     })
 
 

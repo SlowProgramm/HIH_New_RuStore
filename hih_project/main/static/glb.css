@@ -1,5 +1,3 @@
-/* ======= Подключение шрифтов Jura ======= */
-
 @font-face {
     font-family: 'Jura';
     src: url('fonts/Jura-Regular.woff2') format('woff2'),
@@ -12,8 +10,6 @@
     src: url('fonts/Jura-SemiBold.woff2') format('woff2');
     font-weight: 600;
 }
-
-/* ======= Глобальная тема ======= */
 
 body {
     margin: 0;
