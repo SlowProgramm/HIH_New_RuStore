@@ -146,7 +146,7 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
 
 
 
-    # Код перед деплоем 
+    # Ночной код
     star_counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
     for est in AppEstimation.objects.filter(app=app):
         if est.estimation in star_counts:

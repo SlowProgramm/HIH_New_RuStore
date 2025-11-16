@@ -39,14 +39,16 @@
 
         <section class="app-section">
             <h2>Описание</h2>
-            <p class="app-desc">{{ app.description }}</p>
+            <p class="app-desc">{{ app.description }}   </p>
         </section>
 
         {% if app_preview_images %}
             <section class="app-section">
                 <h2>Скриншоты</h2>
                 <div class="mini-carousel">
-                    <div class="main-image">
+
+
+                    <!-- <div class="main-image">
                         <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}">
                     </div>
                     
@@ -57,10 +59,53 @@
                                 alt="Миниатюра {{ forloop.counter }}"
                                 onclick="changeMainImage('{{ image.source.url }}', this)">
                         {% endfor %}
-                    </div>
+                    </div>\ -->
+
+                    <!-- Ночной код  (Тут просто onclick поменял)-->
+                        <div class="main-image">
+                            <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}" 
+                                onclick="openGallery(0)">  <!-- Измени здесь -->
+                        </div>
+
+                        <div class="thumbnail-container">
+                            {% for image in app_preview_images %}
+                                <img src="{{ image.source.url }}" 
+                                    class="thumbnail {% if forloop.first %}active{% endif %}" 
+                                    alt="Миниатюра {{ forloop.counter }}"
+                                    onclick="changeMainImage('{{ image.source.url }}', this); openGallery({{ forloop.counter0 }})">  <!-- Измени здесь -->
+                            {% endfor %}
+                        </div>
+
+
+                    <!-- Конец  -->
+
+
+
                 </div>
             </section>
         {% endif %}
+
+
+        <!-- Ночной код -->
+        <!-- Полноэкранная галерея -->
+        <div id="galleryOverlay" class="gallery-overlay">
+            <div class="gallery-container">
+                <button class="gallery-close" onclick="closeGallery()">×</button>
+                <button class="gallery-nav gallery-prev" onclick="changeGalleryImage(-1)">‹</button>
+                
+                <div class="gallery-slide">
+                    <img id="galleryImage" src="" alt="Скриншот приложения">
+                </div>
+                
+                <button class="gallery-nav gallery-next" onclick="changeGalleryImage(1)">›</button>
+                
+                <div class="gallery-counter">
+                    <span id="galleryCurrent">1</span> / <span id="galleryTotal">{{ app_preview_images|length }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Конец -->
 
         <section class="app-section">
             <h2>Информация</h2>
@@ -97,10 +142,29 @@
                 <form method="post" class="review-form">
                     {% csrf_token %}
 
-                    <div class="review-field">
+                    <!-- <div class="review-field">
                         <label for="{{ form.estimation.id_for_label }}">Оценка</label>
                         {{ form.estimation }}
-                    </div>
+                    </div> --> 
+                    <!-- ! ОБЫЧНАЯ ФОРМА  -->
+                   
+                    
+                        <!-- Ночной код -->
+                    <div class="review-field">
+                        <label>Оценка</label>
+                         <div class="star-rating">
+                            {% for i in "12345" %}
+                                <span class="star" data-value="{{ i }}">★</span>
+                            {% endfor %}
+                            <input type="hidden" name="{{ form.estimation.name }}" id="{{ form.estimation.id_for_label }}" value="{% if form.estimation.value %}{{ form.estimation.value }}{% else %}0{% endif %}">
+                        </div> 
+                        <div class="rating-text">Выберите оценку</div>
+                    </div> 
+
+                    <!-- Конец ночного кода -->
+                   
+
+
 
                     <div class="review-field">
                         <label for="{{ form.estimation_content.id_for_label }}">Ваш отзыв</label>
@@ -120,6 +184,45 @@
                 <p class="review-login">Войдите, чтобы оставить отзыв</p>
             {% endif %}
 
+            <!-- Ночной код -->
+         
+            <div class="reviews-stats">
+            <h3>Статистика оценок</h3>
+            <div class="stats-container">
+                <div class="stat-row">
+                    <span class="stat-star">5 ★</span>
+                    <div class="stat-bar"><div class="stat-fill" style="width: {% widthratio star_counts.5 estimations|length 100 %}%"></div></div>
+                    <span class="stat-count">{{ star_counts.5 }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-star">4 ★</span>
+                    <div class="stat-bar"><div class="stat-fill" style="width: {% widthratio star_counts.4 estimations|length 100 %}%"></div></div>
+                    <span class="stat-count">{{ star_counts.4 }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-star">3 ★</span>
+                    <div class="stat-bar"><div class="stat-fill" style="width: {% widthratio star_counts.3 estimations|length 100 %}%"></div></div>
+                    <span class="stat-count">{{ star_counts.3 }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-star">2 ★</span>
+                    <div class="stat-bar"><div class="stat-fill" style="width: {% widthratio star_counts.2 estimations|length 100 %}%"></div></div>
+                    <span class="stat-count">{{ star_counts.2 }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-star">1 ★</span>
+                    <div class="stat-bar"><div class="stat-fill" style="width: {% widthratio star_counts.1 estimations|length 100 %}%"></div></div>
+                    <span class="stat-count">{{ star_counts.1 }}</span>
+                </div>
+            </div>
+            <div class="stats-total">
+                Всего отзывов: <strong>{{ estimations|length }}</strong>
+            </div>
+
+ <!-- КОнец  ночного кода -->
+
+
+           
             {% for estimation in estimations %}
                 {% if estimation.author and estimation.content %}
                     <div class="review">
@@ -130,6 +233,8 @@
                     </div>
                 {% endif %}
             {% endfor %}
+
+
         </section>
 
     </div>
@@ -143,5 +248,133 @@ function changeMainImage(src, element) {
     });
     element.classList.add('active');
 }
+
+// начало кода скриншотов
+
+let currentGalleryIndex = 0;
+const galleryImages = [
+    {% for image in app_preview_images %}
+        "{{ image.source.url }}",
+    {% endfor %}
+];
+
+function openGallery(index) {
+    currentGalleryIndex = index;
+    updateGalleryImage();
+    document.getElementById('galleryOverlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeGallery() {
+    document.getElementById('galleryOverlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function changeGalleryImage(direction) {
+    currentGalleryIndex += direction;
+    
+    if (currentGalleryIndex < 0) {
+        currentGalleryIndex = galleryImages.length - 1;
+    } else if (currentGalleryIndex >= galleryImages.length) {
+        currentGalleryIndex = 0;
+    }
+    
+    updateGalleryImage();
+}
+
+function updateGalleryImage() {
+    const galleryImage = document.getElementById('galleryImage');
+    const galleryCurrent = document.getElementById('galleryCurrent');
+    const galleryTotal = document.getElementById('galleryTotal');
+    
+    galleryImage.src = galleryImages[currentGalleryIndex];
+    galleryCurrent.textContent = currentGalleryIndex + 1;
+    galleryTotal.textContent = galleryImages.length;
+}
+
+// Закрытие галереи по клику на оверлей
+document.getElementById('galleryOverlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeGallery();
+    }
+});
+
+// Управление клавиатурой
+document.addEventListener('keydown', function(e) {
+    const gallery = document.getElementById('galleryOverlay');
+    if (gallery.style.display === 'flex') {
+        if (e.key === 'Escape') closeGallery();
+        if (e.key === 'ArrowLeft') changeGalleryImage(-1);
+        if (e.key === 'ArrowRight') changeGalleryImage(1);
+    }
+});
+
+// Конец ночного скринщота
+
+
+// Ночной код Звезды
+// Star rating functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('{{ form.estimation.id_for_label }}');
+    const ratingText = document.querySelector('.rating-text');
+    
+    // Set initial rating if exists
+    const initialRating = parseInt(ratingInput.value);
+    if (initialRating > 0) {
+        updateStars(initialRating);
+        updateRatingText(initialRating);
+    }
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            ratingInput.value = value;
+            updateStars(value);
+            updateRatingText(value);
+        });
+        
+        star.addEventListener('mouseover', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            updateStars(value, true);
+            updateRatingText(value);
+        });
+    });
+    
+    document.querySelector('.star-rating').addEventListener('mouseleave', function() {
+        const currentRating = parseInt(ratingInput.value);
+        updateStars(currentRating);
+        updateRatingText(currentRating);
+    });
+    
+    function updateStars(rating, isHover = false) {
+        stars.forEach(star => {
+            const starValue = parseInt(star.getAttribute('data-value'));
+            if (starValue <= rating) {
+                star.classList.add('active');
+                if (isHover) {
+                    star.classList.add('hover');
+                } else {
+                    star.classList.remove('hover');
+                }
+            } else {
+                star.classList.remove('active', 'hover');
+            }
+        });
+    }
+    
+    function updateRatingText(rating) {
+        const texts = {
+            0: 'Выберите оценку',
+            1: 'Ужасно',
+            2: 'Плохо',
+            3: 'Нормально',
+            4: 'Хорошо',
+            5: 'Отлично'
+        };
+        ratingText.textContent = texts[rating];
+    }
+});
 </script>
+
 {% endblock %}
