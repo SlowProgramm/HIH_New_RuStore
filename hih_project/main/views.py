@@ -48,65 +48,6 @@ def remove_icon_from_folder(icon_path):
 
 
 
-def create_app(request):
-    # TARGET_CATEGORIES = [
-    #     "Шутеры",
-    #     "Аркады",
-    #     "Гоночные",
-    #     "Игры с AR",
-    #     "Головоломки",
-    #     "Словесные",
-    #     "Викторины",
-    #     "Приключения",
-    #     "Ролевые",
-    #     "Инди",
-    #     "Стратегии",
-    #     "Настольные игры",
-    #     "Карточные",
-    #     "Детские",
-    #     "Семейные",
-    # ]
-    
-    main_category, created = AppCategory.objects.get_or_create(name="Игры")
-    
-    # Создаем все субкатегории
-    for category_name in TARGET_CATEGORIES:
-        AppSubcategory.objects.get_or_create(
-            name=category_name,
-            category=main_category
-        )
-    
-    # print(f"Создано {len(TARGET_CATEGORIES)} субкатегорий")
-
-
-    # ico_path, dir = get_and_remove_random_icon()
-
-    # app = App(
-    #         id=str(uuid6()),
-    #         name="Имя приложение",
-    #         description="Это тестовое приложение, созданное через кнопку",
-    #         size=125,
-    #         age_rating=AppAgeRating.objects.order_by('?').first(),
-    #         subcategory=AppSubcategory.objects.order_by('?').first(),
-    #         developer=AppDeveloper.objects.order_by('?').first(),
-    #         rating=0,
-    #         estimations_count=0,
-    #         downloads=0,
-    #         views=0,
-    #     )
-    # icon_result = get_and_remove_random_icon()
-    # if icon_result:
-    #     icon_path, original_filename = icon_result
-    #     with open(icon_path, 'rb') as f:
-    #         app.icon.save(original_filename, File(f), save=False)
-    #     app.save()
-    #     remove_icon_from_folder(icon_path)
-    #     print('ХАЙП')
-    # else:
-    #     print('Error')
-    return render(request, 'account.html')
-
-
 def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'index.html', {'title':'Главная'})
 
@@ -202,14 +143,27 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
         })
     else:
         form = EstimationForm()
+
+
+
+    # Код перед деплоем 
+    star_counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+    for est in AppEstimation.objects.filter(app=app):
+        if est.estimation in star_counts:
+            star_counts[est.estimation] += 1
+    # Конец кода 
+    
     return render(request, 'app_detail.html', {
         'app': app,
         'user_estimation_exists': estimation is not None,
         'estimations': AppEstimation.objects.filter(app=app),
         'app_preview_images': app.query_preview_images(),
         'form': form,
-        'app_download_link': f'https://www.rustore.ru/catalog/search?query={urllib.parse.quote(app.name)}'
-    })
+        'app_download_link': f'https://www.rustore.ru/catalog/search?query={urllib.parse.quote(app.name)}',
+        #  # Код перед деплоем 
+        'star_counts': star_counts,  
+         # Конец кода  
+        })
 
 
 def category_view(request: HttpRequest) -> HttpResponse:

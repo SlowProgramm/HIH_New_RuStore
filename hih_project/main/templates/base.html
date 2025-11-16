@@ -23,25 +23,28 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="header__inner">
+   <header class="header">
+    <div class="header__inner">
 
-            <a href="{% url 'index' %}" class="header__logo">
-                <img src="{% static 'src/RuStore_logo.png' %}" class="header__logo-img" alt="Логотип">
-                <h4 class="header__logo-text">RuStore</h4>
+        <!-- ЛОГО -->
+        <a href="{% url 'index' %}" class="header__logo">
+            <img src="{% static 'src/RuStore_logo.png' %}" class="header__logo-img" alt="Логотип">
+            <h4 class="header__logo-text">RuStore</h4>
+        </a>
+
+        <!-- МЕНЮ (ДЛЯ ДЕСКТОПА) -->
+        <nav class="nav" id="mainNav">
+            <a href="{% url 'index' %}" class="nav__item">Главная</a>
+            <a href="{% url 'apps' %}" class="nav__item">Каталог</a>
+            <a href="{% url 'categories' %}" class="nav__item">Категории</a>
+        </nav>
+
+        <!-- ПОИСК + ЮЗЕР + БУРГЕР -->
+        <div class="header__right">
+            <a href="{% url 'search' %}" class="search-btn">
+                <img src="{% static 'src/search.png' %}" class="search-btn__icon" alt="">
+                <span class="search-btn__text">Поиск</span>
             </a>
-
-            <nav class="nav">
-                <a href="{% url 'index' %}" class="nav__item">Главная</a>
-                <a href="{% url 'apps' %}" class="nav__item">Каталог</a>
-                <a href="{% url 'categories' %}" class="nav__item">Категории</a>
-            </nav>
-
-            <div class="header__right">
-                <a href="{% url 'search' %}" class="search-btn">
-                    <img src="{% static 'src/search.png' %}" class="search-btn__icon" alt="">
-                    Поиск
-                </a>
 
             {% if user.is_authenticated %}
                 <a href="{% url 'account' %}" class="user-link">
@@ -89,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
-                {% if user.is_authenticated %}
+            </script>
+                {% comment %} {% if user.is_authenticated %}
                     <a href="{% url 'account' %}" class="user-link">
                         <img src="{% static 'src/avatar.png' %}" class="user" alt="">
                     </a>
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </a>
                 {% endif %}
             </div>
-        </div>
+        </div> {% endcomment %}
     </header>
 
     

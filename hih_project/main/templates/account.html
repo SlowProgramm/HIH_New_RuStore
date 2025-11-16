@@ -30,7 +30,11 @@
                 </div>
 
                 <div class="acc-actions">
-                    <a href="{% url 'logout' %}" class="acc-btn acc-btn-secondary">Выйти</a>
+                     <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                    <button type="submit" class="acc-btn acc-btn-secondary">Выйти</button>
+                    </form>
+                    
                 </div>
             </div>
             <div class="acc-stats">
