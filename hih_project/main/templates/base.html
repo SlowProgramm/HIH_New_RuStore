@@ -73,6 +73,29 @@
 </main>
 
 <script>
+document.addEventListener('submit', function(e) {
+    if (e.target.tagName === 'FORM') {
+        sessionStorage.setItem('scrollPosition', window.pageYOffset);
+        sessionStorage.setItem('formSubmitted', 'true');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (sessionStorage.getItem('formSubmitted') === 'true') {
+        const scrollPosition = sessionStorage.getItem('scrollPosition');
+        if (scrollPosition) {
+            setTimeout(() => {
+                window.scrollTo({
+                    top: parseInt(scrollPosition),
+                    behavior: 'smooth' // Плавная прокрутка
+                });
+                sessionStorage.removeItem('scrollPosition');
+                sessionStorage.removeItem('formSubmitted');
+            }, 50);
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const burgerMenu = document.getElementById('burgerMenu');
     const mainNav = document.getElementById('mainNav');
@@ -83,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.toggle('menu-open');
     });
     
-    // Закрытие меню при клике на ссылку
     const navItems = document.querySelectorAll('.nav__item');
     navItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -93,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-            </script>
+</script>
                 {% comment %} {% if user.is_authenticated %}
                     <a href="{% url 'account' %}" class="user-link">
                         <img src="{% static 'src/avatar.png' %}" class="user" alt="">
