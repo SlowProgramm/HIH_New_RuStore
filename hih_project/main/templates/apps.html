@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         wrapper.addEventListener('mouseenter', function() {
             isHovered = true;
-            // Задержка для плавного появления
             hoverTimeout = setTimeout(() => {
                 if (isHovered) {
                     this.classList.add('card-hovered');
@@ -100,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Предзагрузка изображений для плавной анимации
     const bgScreenshots = document.querySelectorAll('.bg-screenshot');
     bgScreenshots.forEach(img => {
         const tempImg = new Image();

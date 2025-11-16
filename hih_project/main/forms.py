@@ -1,14 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
-from django.forms import ModelForm, TextInput, Textarea, CharField, PasswordInput, Form, IntegerField
-from django.db.models import Model
-from .models import StoreUser, AppEstimation
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django import forms
+from .models import StoreUser, AppEstimation
         
-
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
         max_length=150,
@@ -19,7 +14,6 @@ class SignUpForm(UserCreationForm):
         }),
         help_text=''
     )
-    
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'signup_page_form_input',
@@ -28,7 +22,6 @@ class SignUpForm(UserCreationForm):
         }),
         help_text=''
     )
-    
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'signup_page_form_input',
@@ -40,7 +33,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = StoreUser
-        fields = ('avatar', 'username', 'password1', 'password2')
+        fields = 'avatar', 'username', 'password1', 'password2'
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
@@ -60,12 +53,11 @@ class SignUpForm(UserCreationForm):
     
     
 class LoginForm(AuthenticationForm):
-    username: CharField = CharField(label='Имя пользователя')
-    password: CharField = CharField(label='Пароль', widget=PasswordInput)
+    username = forms.CharField(label='Имя пользователя')
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
 
 
 class EstimationForm(forms.ModelForm):
-
     estimation = forms.TypedChoiceField(
         choices=[
             (1, "1"),
@@ -80,7 +72,6 @@ class EstimationForm(forms.ModelForm):
             "class": "review-select"
         })
     )
-
     content = forms.CharField(
         label="Ваш отзыв",
         required=False,
@@ -97,8 +88,8 @@ class EstimationForm(forms.ModelForm):
         fields = ["estimation", "content"]
 
 
-class SearchAppsForm(Form):
-    search_request = CharField(
+class SearchAppsForm(forms.Form):
+    search_request = forms.CharField(
         label='Поисковый запрос',
         required=True,
         widget=forms.TextInput(attrs={

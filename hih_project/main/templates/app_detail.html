@@ -7,8 +7,7 @@
 
 {% block content %}
 <div class="app-page">
-
-    <!-- HEADER -->
+    <!-- ЗАГОЛОВОК ПРИЛОЖУХИ -->
     <div class="app-header">
         <div class="app-icon">
             {% if app.icon %}
@@ -36,58 +35,35 @@
     </div>
 
     <div class="app-content">
-
+        <!-- ОПИСЬ -->
         <section class="app-section">
             <h2>Описание</h2>
-            <p class="app-desc">{{ app.description }}   </p>
+            <p class="app-desc">{{ app.description }}</p>
         </section>
 
+        <!-- КАРУСЕЛЬ -->
         {% if app_preview_images %}
             <section class="app-section">
                 <h2>Скриншоты</h2>
                 <div class="mini-carousel">
-
-
-                    <!-- <div class="main-image">
-                        <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}">
+                    <div class="main-image">
+                        <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}" 
+                            onclick="openGallery(0)">
                     </div>
-                    
+
                     <div class="thumbnail-container">
                         {% for image in app_preview_images %}
                             <img src="{{ image.source.url }}" 
                                 class="thumbnail {% if forloop.first %}active{% endif %}" 
                                 alt="Миниатюра {{ forloop.counter }}"
-                                onclick="changeMainImage('{{ image.source.url }}', this)">
+                                onclick="changeMainImage('{{ image.source.url }}', this); openGallery({{ forloop.counter0 }})">  <!-- Измени здесь -->
                         {% endfor %}
-                    </div>\ -->
-
-                    <!-- Ночной код  (Тут просто onclick поменял)-->
-                        <div class="main-image">
-                            <img id="mainCarouselImage" src="{{ app_preview_images.0.source.url }}" alt="{{ app.name }}" 
-                                onclick="openGallery(0)">  <!-- Измени здесь -->
-                        </div>
-
-                        <div class="thumbnail-container">
-                            {% for image in app_preview_images %}
-                                <img src="{{ image.source.url }}" 
-                                    class="thumbnail {% if forloop.first %}active{% endif %}" 
-                                    alt="Миниатюра {{ forloop.counter }}"
-                                    onclick="changeMainImage('{{ image.source.url }}', this); openGallery({{ forloop.counter0 }})">  <!-- Измени здесь -->
-                            {% endfor %}
-                        </div>
-
-
-                    <!-- Конец  -->
-
-
-
+                    </div>
                 </div>
             </section>
         {% endif %}
 
-
-        <!-- Ночной код -->
-        <!-- Полноэкранная галерея -->
+        <!-- ОВЕРЛЕЙ ПОЛНОЭКРАННОЙ ГАЛЕРЕИИ -->
         <div id="galleryOverlay" class="gallery-overlay">
             <div class="gallery-container">
                 <button class="gallery-close" onclick="closeGallery()">×</button>
@@ -104,8 +80,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Конец -->
 
         <section class="app-section">
             <h2>Информация</h2>
@@ -136,20 +110,10 @@
 
         <section class="review-section">
             <h2 style="color:#544DDF;">Отзывы</h2>
-
             {% if user.is_authenticated %}
-
                 <form method="post" class="review-form">
                     {% csrf_token %}
-
-                    <!-- <div class="review-field">
-                        <label for="{{ form.estimation.id_for_label }}">Оценка</label>
-                        {{ form.estimation }}
-                    </div> --> 
-                    <!-- ! ОБЫЧНАЯ ФОРМА  -->
-                   
-                    
-                        <!-- Ночной код -->
+                    <!-- ВЫБОР ОЦЕНКИ -->
                     <div class="review-field">
                         <label>Оценка</label>
                          <div class="star-rating">
@@ -159,18 +123,15 @@
                             <input type="hidden" name="{{ form.estimation.name }}" id="{{ form.estimation.id_for_label }}" value="{% if form.estimation.value %}{{ form.estimation.value }}{% else %}0{% endif %}">
                         </div> 
                         <div class="rating-text">Выберите оценку</div>
-                    </div> 
+                    </div>
 
-                    <!-- Конец ночного кода -->
-                   
-
-
-
+                    <!-- СОДЕРЖИМОЕ ОТЗЫВА -->
                     <div class="review-field">
                         <label for="{{ form.estimation_content.id_for_label }}">Ваш отзыв</label>
                         {{ form.content }}
                     </div>
 
+                    <!-- ОТПРАВКА ОТЗЫВА -->
                     <button type="submit" class="btn-review">
                         {% if user_estimation_exists %}
                             Изменить отзыв
@@ -179,13 +140,11 @@
                         {% endif %}
                     </button>
                 </form>
-
             {% else %}
                 <p class="review-login">Войдите, чтобы оставить отзыв</p>
             {% endif %}
 
-            <!-- Ночной код -->
-         
+            <!-- СТАТА ОЦЕНОК -->
             <div class="reviews-stats">
             <h3>Статистика оценок</h3>
             <div class="stats-container">
@@ -218,11 +177,8 @@
             <div class="stats-total">
                 Всего отзывов: <strong>{{ estimations|length }}</strong>
             </div>
-
- <!-- КОнец  ночного кода -->
-
-
            
+            <!-- ЛОАДЕР ПОЛНОЦЕННЫХ ОТЗЫВОВ (онли не пустые) -->
             {% for estimation in estimations %}
                 {% if estimation.author and estimation.content %}
                     <div class="review">
@@ -233,10 +189,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-
-
         </section>
-
     </div>
 </div>
 

@@ -1,52 +1,11 @@
 from uuid import uuid6
-from uuid import uuid6
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.utils import timezone
 from django.contrib.auth import login, authenticate
-from django.db.models.functions import Lower
-from datetime import datetime
-
-import urllib
-from .models import *
-from .forms import *
-import os
-import random
 import urllib.parse
-from django.core.files import File
-from django.conf import settings
-
-
-def get_and_remove_random_icon():
-    icons_dir = "C:/Users/Sol/Desktop/hih_icons"
-    
-    
-    image_files = []
-    for file in os.listdir(icons_dir):
-        if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
-            image_files.append(file)
-    
-    if not image_files:
-        return None
-    
-
-    random_icon = random.choice(image_files)
-    icon_path = os.path.join(icons_dir, random_icon)
-    
-    return icon_path, random_icon
-
-def remove_icon_from_folder(icon_path):
-    """Удалить файл иконки из папки"""
-    try:
-        if os.path.exists(icon_path):
-            os.remove(icon_path)
-            print(f"Иконка удалена: {icon_path}")
-            return True
-    except Exception as e:
-        print(f"Ошибка при удалении иконки: {e}")
-    return False
-
-
+from .models import AppEstimation, App, AppSubcategory, AppCategory, AppDeveloper
+from .forms import *
 
 def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'index.html', {'title':'Главная'})
@@ -82,8 +41,6 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 
 def account_view(request: HttpRequest) -> HttpResponse:
-    if request.method == 'POST':
-        create_app(request)
     return render(request, 'account.html', {'user_estimations': request.user.query_apps_estimations()})
 
 
@@ -144,14 +101,10 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
     else:
         form = EstimationForm()
 
-
-
-    # Ночной код
     star_counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
     for est in AppEstimation.objects.filter(app=app):
         if est.estimation in star_counts:
             star_counts[est.estimation] += 1
-    # Конец кода 
     
     return render(request, 'app_detail.html', {
         'app': app,
@@ -160,10 +113,8 @@ def app_detail_view(request: HttpRequest, app_id: str) -> HttpResponse:
         'app_preview_images': app.query_preview_images(),
         'form': form,
         'app_download_link': f'https://www.rustore.ru/catalog/search?query={urllib.parse.quote(app.name)}',
-        #  # Код перед деплоем 
         'star_counts': star_counts,  
-         # Конец кода  
-        })
+    })
 
 
 def category_view(request: HttpRequest) -> HttpResponse:
@@ -206,7 +157,7 @@ def apps_for_category_view(request: HttpRequest) -> HttpResponse:
     
     if subcategory_id:
         apps = apps.filter(subcategory_id=subcategory_id)
-    # Если подкатегория не выбрана, показываем все игры
+
     context = {
         'apps': apps,
         'subcategory_id': subcategory_id,
@@ -216,79 +167,15 @@ def apps_for_category_view(request: HttpRequest) -> HttpResponse:
 
 
 def developer_view(request: HttpRequest, dev_id: str) -> HttpResponse:
-    name = request.GET.get('name')
     try:
         dev = AppDeveloper.objects.get(id=dev_id)
-
         apps = App.objects.filter(developer=dev)
-
-        context = {
+        return render(request, 'developer_page.html', {
             'dev': dev,
             'apps' : apps,
-        }
-        return render(request, 'developer_page.html', context)
+        })
     except App.DoesNotExist:
         return render(request, '404.html', status=404)
-    
-
-def import_apps_from_json(json_file_path):
-    # Чтение JSON файла
-    with open(json_file_path, 'r', encoding='utf-8') as file:
-        apps_data = json.load(file)
-    
-    for app_data in apps_data:
-        try:
-            # Создание основного объекта приложения
-            app = App(
-                id=str(uuid6()),
-                name=app_data['name'],
-                description=app_data.get('short_description', '') or "Описание отсутствует",
-                size=125,  # Можно рассчитать на основе реальных данных или оставить по умолчанию
-                age_rating=AppAgeRating.objects.order_by('?').first(),
-                subcategory=AppSubcategory.objects.order_by('?').first(),
-                developer=AppDeveloper.objects.order_by('?').first(),
-                rating=app_data.get('rating', 0),
-                estimations_count=app_data.get('rating_count', 0),
-                downloads=0,
-                views=0,
-            )
-            app.save()
-            
-            # Загрузка иконки
-            if app_data.get('icon_url'):
-                try:
-                    icon_response = requests.get(app_data['icon_url'], timeout=10)
-                    if icon_response.status_code == 200:
-                        icon_name = f"app_icons/{app.id}_icon.jpg"
-                        app.icon.save(icon_name, ContentFile(icon_response.content), save=True)
-                except Exception as e:
-                    print(f"Ошибка загрузки иконки для {app_data['name']}: {e}")
-            
-            # Загрузка скриншотов
-            if app_data.get('screenshots'):
-                for i, screenshot_url in enumerate(app_data['screenshots']):
-                    try:
-                        screenshot_response = requests.get(screenshot_url, timeout=10)
-                        if screenshot_response.status_code == 200:
-                            screenshot_name = f"app_screenshots/{app.id}_screenshot_{i}.jpg"
-                            
-                            # Создание объекта скриншота (предполагая, что у вас есть модель AppScreenshot)
-                            screenshot = AppScreenshot(
-                                app=app,
-                                image=screenshot_name
-                            )
-                            screenshot.image.save(
-                                screenshot_name, 
-                                ContentFile(screenshot_response.content), 
-                                save=True
-                            )
-                    except Exception as e:
-                        print(f"Ошибка загрузки скриншота {i} для {app_data['name']}: {e}")
-            
-            print(f"Успешно добавлено приложение: {app_data['name']}")
-            
-        except Exception as e:
-            print(f"Ошибка при добавлении приложения {app_data.get('name', 'Unknown')}: {e}")
 
 
 def search_apps_view(request: HttpRequest) -> HttpResponse:
@@ -313,13 +200,10 @@ def search_apps_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'search.html', {'form': form, 'apps': apps, 'search_request': search_request})
 
 
-def onboarding_welcome(request):
+def onboarding_welcome(request: HttpRequest) -> HttpResponse:
     """Приветственный экран onboarding"""
     return render(request, 'onboarding/welcome.html')
 
-def onboarding_tour(request):
-    return render(request, 'onboarding/tour.html', {
-        'popular_apps': App.objects.order_by('-rating', '-downloads').all(),
-        'user_top_10_apps': request.user.get_personal_top_10_apps() if request.user.is_authenticated else ()
-    })
 
+def onboarding_tour(request: HttpRequest) -> HttpResponse:
+    return render(request, 'onboarding/tour.html')

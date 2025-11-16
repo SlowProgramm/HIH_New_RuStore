@@ -145,9 +145,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     if (hasCompletedOnboarding()) {
         // Если уже проходил - сразу показываем основной контент
-        showMainContent();
+        window.location.href = '{% url 'index' %}';
     }
-    // Если не проходил - onboarding уже виден (по умолчанию)
 });
 
 function startOnboarding() {
