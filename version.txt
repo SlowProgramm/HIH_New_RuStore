@@ -1,0 +1,4 @@
+Короткое описание версии сайта в этих исходниках 
+github: https://github.com/SlowProgramm/HIH_New_RuStore
+branch: post-stop-code
+build: latest
